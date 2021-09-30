@@ -1,0 +1,31 @@
+{
+  "name": "@loop/data-models",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "@loop/core": "1.0.0",
+    "sequelize": "^6.6.5",
+    "mysql2": "^2.2.5"
+  },
+  "loopExtensions": [
+    {
+      "backend": "lib/node/data-models-module"
+    }
+  ],
+  "devDependencies": {
+    "typescript": "^4.3.5",
+    "@theia/ext-scripts": "4.2.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "clean": "theiaext clean",
+    "build": "theiaext build",
+    "watch": "theiaext watch"
+  }
+}

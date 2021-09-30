@@ -1,0 +1,27 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: var(--theia-ui-font-family);
+    background: var(--loop-background);
+    color: var(--loop-foreground);
+}
+
+.locator-preload {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50000;
+    background: var(--loop-background);
+    background-image: var(--loop-full-icon);
+    background-size: 60px 60px;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    transition: opacity 0.8s;
+}
+
+@import './variables.css';
+@import './loop-startup.css';

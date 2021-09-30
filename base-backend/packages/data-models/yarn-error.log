@@ -1,0 +1,57 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/Cellar/yarn/1.22.5/libexec/bin/yarn.js
+
+PATH: 
+  /usr/local/opt/php@7.4/sbin:/usr/local/opt/php@7.4/bin:/usr/local/opt/m4/bin:/Users/nacho/.swiftenv/shims:/Users/nacho/.swiftenv/bin:/Users/nacho/.npm-packages/bin:/opt/local/bin:/opt/local/sbin:/Library/Frameworks/Python.framework/Versions/2.7/bin:/opt/local/bin:/opt/local/sbin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/VMware Fusion.app/Contents/Public:/usr/local/go/bin:/opt/X11/bin:/Library/Apple/usr/bin:/Applications/Wireshark.app/Contents/MacOS:/usr/local/opt/php@7.4/sbin:/usr/local/opt/php@7.4/bin:/usr/local/opt/m4/bin:/Users/nacho/.swiftenv/shims:/Users/nacho/.swiftenv/bin:/Users/nacho/.npm-packages/bin:/opt/local/bin:/opt/local/sbin:/Library/Frameworks/Python.framework/Versions/2.7/bin:/usr/local/mysql/bin:/usr/local/apache-maven/3.3.3/bin:/Applications/Visual Studio Code.app/Contents/Resources/app/bin:/Users/nacho/Development/wordpress_dev/phpcs/bin:/Users/nacho/Development/wordpress_dev/tric:/usr/local/go/bin:/usr/local/mysql/bin:/usr/local/apache-maven/3.3.3/bin:/Applications/Visual Studio Code.app/Contents/Resources/app/bin:/Users/nacho/Development/wordpress_dev/phpcs/bin:/Users/nacho/Development/wordpress_dev/tric
+
+Yarn version: 
+  1.22.5
+
+Node version: 
+  12.16.3
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/@ct-locator%2fcore: Not found
+      at Request.params.callback [as _callback] (/usr/local/Cellar/yarn/1.22.5/libexec/lib/cli.js:66988:18)
+      at Request.self.callback (/usr/local/Cellar/yarn/1.22.5/libexec/lib/cli.js:140749:22)
+      at Request.emit (events.js:310:20)
+      at Request.<anonymous> (/usr/local/Cellar/yarn/1.22.5/libexec/lib/cli.js:141721:10)
+      at Request.emit (events.js:310:20)
+      at IncomingMessage.<anonymous> (/usr/local/Cellar/yarn/1.22.5/libexec/lib/cli.js:141643:12)
+      at Object.onceWrapper (events.js:416:28)
+      at IncomingMessage.emit (events.js:322:22)
+      at endReadableNT (_stream_readable.js:1187:12)
+      at processTicksAndRejections (internal/process/task_queues.js:84:21)
+
+npm manifest: 
+  {
+    "name": "@ct-locator/data-models",
+    "version": "1.0.0",
+    "description": "",
+    "dependencies": {
+      "@ct-locator/core": "1.0.0"
+    },
+    "devDependencies": {
+      "typescript": "^4.3.5"
+    },
+    "publishConfig": {
+      "access": "public"
+    },
+    "files": [
+      "lib",
+      "src"
+    ],
+    "scripts": {
+      "compile": "tsc -p ./",
+      "watch": "tsc -watch -p ./"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

@@ -1,0 +1,6 @@
+dist
+node_modules
+lib
+examples/*/src-gen
+examples/*/webpack.config.js
+yarn-error.log

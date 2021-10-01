@@ -5,7 +5,7 @@ import { DataModelsManager, ModelServiceContribution, SequelizeModelContribution
 import { GeoIpService } from './services/geo-ip';
 import { bindContributionProvider, BackendApplicationContribution } from '@loop/core/lib';
 
-export const dataModelsModule = new ContainerModule(bind => {
+export default new ContainerModule(bind => {
     bind(DataModelsManager).toSelf().inSingletonScope();
     bind(BackendApplicationContribution).toDynamicValue(ctx => ctx.container.get(DataModelsManager));
 

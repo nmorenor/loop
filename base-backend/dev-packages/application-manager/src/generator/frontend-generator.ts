@@ -74,11 +74,9 @@ const container = new Container();
 container.load(frontendApplicationModule);
 
 function load(raw) {
-    return Promise.resolve(raw).then(module => {
-        for (let next in module) {
-            container.load(module[next]);
-        }
-    });
+    return Promise.resolve(raw.default).then(
+        module => container.load(module)
+    );
 }
 
 function start() {

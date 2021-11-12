@@ -69,9 +69,11 @@ require('reflect-metadata');
 const { Container } = require('inversify');
 const { FrontendApplication } = require('@loop/core/lib/browser');
 const { frontendApplicationModule } = require('@loop/core/lib/browser/frontend-application-module');
+const { messagingFrontendModule } = require('@theia/core/lib/browser/messaging/messaging-frontend-module'
 
 const container = new Container();
 container.load(frontendApplicationModule);
+container.load(messagingFrontendModule);
 
 function load(raw) {
     return Promise.resolve(raw.default).then(
@@ -80,6 +82,7 @@ function load(raw) {
 }
 
 function start() {
+    (window['theia'] = window['theia'] || {}).container = container;
     const application = container.get(FrontendApplication);
     application.start();
 }

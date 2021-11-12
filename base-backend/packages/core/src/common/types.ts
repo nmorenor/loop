@@ -16,9 +16,6 @@
 
 export type Mutable<T> = { -readonly [P in keyof T]: T[P] };
 
-export type Deferred<T> = {
-    [P in keyof T]: Promise<T[P]>
-};
 export type RecursivePartial<T> = {
     [P in keyof T]?: RecursivePartial<T[P]>;
 };

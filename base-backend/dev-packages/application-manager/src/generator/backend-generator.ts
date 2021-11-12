@@ -31,6 +31,7 @@ const path = require('path');
 const express = require('express');
 const { Container } = require('inversify');
 const { backendApplicationModule } = require('@loop/core/lib/node/backend-module');
+const { messagingBackendModule } = require('@loop/core/lib/node/messaging/messaging-backend-module');
 const { CliManager } = require('@loop/core/lib/node/cli');
 const { BackendApplication } = require('@loop/core/lib/node/backend-application');
 const { LoopContainer } = require('@loop/core/lib/common/common');
@@ -38,6 +39,7 @@ const { DataModelsManager } = require('@loop/data-models/lib/node/data-models-ma
 
 const container = new Container();
 container.load(backendApplicationModule);
+container.load(messagingBackendModule);
 container.bind(LoopContainer).toConstantValue(container);
 
 function load(raw) {

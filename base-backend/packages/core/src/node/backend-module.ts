@@ -3,7 +3,16 @@ import { bindContributionProvider } from '../common/contribution-provider';
 import { CliContribution, CliManager } from './cli';
 import { ApplicationPackage } from '@theia/application-package';
 import { ApplicationConfigProvider, BackendApplication, BackendApplicationCliContribution, BackendApplicationContribution } from './backend-application';
+import { ConnectionContainerModule } from './messaging/connection-container-module';
+import { MessageClient, MessageService, messageServicePath } from '../common';
+
+const messageConnectionModule = ConnectionContainerModule.create(({ bind, bindFrontendService }) => {
+    bindFrontendService(messageServicePath, MessageClient);
+    bind(MessageService).toSelf().inSingletonScope();
+});
+
 export const backendApplicationModule = new ContainerModule(bind => {
+    bind(ConnectionContainerModule).toConstantValue(messageConnectionModule);
     bind(CliManager).toSelf().inSingletonScope();
     bindContributionProvider(bind, CliContribution);
 

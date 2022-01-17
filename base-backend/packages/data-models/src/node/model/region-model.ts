@@ -31,4 +31,7 @@ export class ContinentModelContribution implements SequelizeModelContribution {
             timestamps: false
         });
     }
+    configure(sequelize: Sequelize): void {
+        Region.sync();
+    }
 }

@@ -236,11 +236,11 @@ export class JsonRpcProxyFactory<T extends object> implements ProxyHandler<T> {
             const method = p.toString();
             const capturedError = new Error(`Request '${method}' failed`);
             return this.connectionPromise.then(connection =>
-                new Promise((resolve, reject) => {
+                new Promise<any>((resolve, reject) => {
                     try {
                         if (isNotify) {
                             connection.sendNotification(method, ...args);
-                            resolve();
+                            resolve(undefined);
                         } else {
                             const resultPromise = connection.sendRequest(method, ...args) as Promise<any>;
                             resultPromise

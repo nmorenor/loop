@@ -61,7 +61,7 @@ export async function retry<T>(task: () => Promise<T>, retryDelay: number, retri
     for (let i = 0; i < retries; i++) {
         try {
             return await task();
-        } catch (error) {
+        } catch (error: any) {
             lastError = error;
 
             await timeout(retryDelay);

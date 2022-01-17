@@ -11,3 +11,5 @@ export * from './promise-util';
 export * from './cancellation';
 export * from './message-service-protocol';
 export * from './message-service';
+export * from './messaging/index';
+export * from './path';

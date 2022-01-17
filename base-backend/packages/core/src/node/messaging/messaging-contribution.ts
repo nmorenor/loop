@@ -61,7 +61,7 @@ export class MessagingContribution implements BackendApplicationContribution, Me
     protected readonly httpWebsocketAdapterFactory: () => HttpWebsocketAdapter;
 
     protected webSocketServer: ws.Server | undefined;
-    protected readonly wsHandlers = new MessagingContribution.ConnectionHandlers<ws | HttpWebsocketAdapter>();
+    protected readonly wsHandlers = new MessagingContribution.ConnectionHandlers<ws>();
     protected readonly channelHandlers = new MessagingContribution.ConnectionHandlers<WebSocketChannel>();
     protected readonly httpWebsocketAdapters = new Map<string, HttpWebsocketAdapter>();
 
@@ -114,7 +114,8 @@ export class MessagingContribution implements BackendApplicationContribution, Me
             this.handleConnection(socket, request);
         });
         setInterval(() => {
-            this.webSocketServer!.clients.forEach((socket: CheckAliveWS) => {
+            this.webSocketServer!.clients.forEach((s: any) => {
+                const socket = s as CheckAliveWS;
                 if (socket.alive === false) {
                     socket.terminate();
                     return;
@@ -147,7 +148,7 @@ export class MessagingContribution implements BackendApplicationContribution, Me
                 if (!adapter) {
                     adapter = this.httpWebsocketAdapterFactory();
                     this.httpWebsocketAdapters.set(body.id, adapter);
-                    this.handleConnection(adapter, req);
+                    this.handleConnection(adapter as any, req);
                 }
                 if (typeof body.polling === 'boolean' && body.polling) {
                     res.send(await adapter.getPendingMessages());
@@ -171,7 +172,7 @@ export class MessagingContribution implements BackendApplicationContribution, Me
             if (allowed) {
                 this.webSocketServer!.handleUpgrade(request, socket, head, client => {
                     this.webSocketServer!.emit('connection', client, request);
-                    this.messagingListener.onDidWebSocketUpgrade(request, client);
+                    this.messagingListener.onDidWebSocketUpgrade(request, client as ws);
                 });
             } else {
                 console.error(`refused a websocket connection: ${request.connection.remoteAddress}`);
@@ -185,7 +186,7 @@ export class MessagingContribution implements BackendApplicationContribution, Me
         });
     }
 
-    protected handleConnection(socket: ws | HttpWebsocketAdapter, request: http.IncomingMessage): void {
+    protected handleConnection(socket: ws, request: http.IncomingMessage): void {
         const pathname = request.url && url.parse(request.url).pathname;
         if (pathname && !this.wsHandlers.route(pathname, socket)) {
             console.error('Cannot find a ws handler for the path: ' + pathname);

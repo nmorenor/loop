@@ -66,10 +66,11 @@ export class FrontendGenerator extends AbstractGenerator {
         return `// @ts-check
 ${this.ifBrowser("require('es6-promise/auto');")}
 require('reflect-metadata');
+require('setimmediate');
 const { Container } = require('inversify');
 const { FrontendApplication } = require('@loop/core/lib/browser');
 const { frontendApplicationModule } = require('@loop/core/lib/browser/frontend-application-module');
-const { messagingFrontendModule } = require('@theia/core/lib/browser/messaging/messaging-frontend-module'
+const { messagingFrontendModule } = require('@loop/core/lib/browser/messaging/messaging-frontend-module');
 
 const container = new Container();
 container.load(frontendApplicationModule);
@@ -82,7 +83,7 @@ function load(raw) {
 }
 
 function start() {
-    (window['theia'] = window['theia'] || {}).container = container;
+    (window['theia'] = window['theia'] || {}).container = container;
     const application = container.get(FrontendApplication);
     application.start();
 }

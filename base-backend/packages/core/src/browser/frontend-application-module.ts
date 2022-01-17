@@ -1,8 +1,16 @@
 import '../../src/browser/styles/index.css';
 import 'font-awesome/css/font-awesome.min.css';
 
-import { ContainerModule } from 'inversify';
+import { ContainerModule, interfaces } from 'inversify';
 import { FrontendApplication } from './frontend-application';
+import { MessageClient } from '../common/message-service-protocol';
+import { MessageService, MessageServiceFactory } from '../common';
+
+export function bindMessageService(bind: interfaces.Bind): interfaces.BindingWhenOnSyntax<MessageService> {
+    bind(MessageClient).toSelf().inSingletonScope();
+    bind(MessageServiceFactory).toFactory(({ container }) => () => container.get(MessageService));
+    return bind(MessageService).toSelf().inSingletonScope();
+}
 
 export const frontendApplicationModule = new ContainerModule(bind => {
 
@@ -10,4 +18,5 @@ export const frontendApplicationModule = new ContainerModule(bind => {
         app.container = ctx.container;
         return app;
     });
+    bindMessageService(bind);
 });

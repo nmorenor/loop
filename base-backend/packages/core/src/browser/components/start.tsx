@@ -1,12 +1,14 @@
 
 import React from 'react';
+import { GreetingsService } from '../../common/services/greetings';
 
 export interface StartProps {
     message: string;
     title: string;
+    greetingsService: GreetingsService;
 }
 
-const Start: React.FC<StartProps> = ({ message, title }) => {
+const Start: React.FC<StartProps> = ({ message, title, greetingsService }) => {
     if (!message || !title) {
         return <></>;
     }
@@ -19,7 +21,11 @@ const Start: React.FC<StartProps> = ({ message, title }) => {
 
                     <div>
                         <p className='loop-text-alert format'>{title}</p>
-                        <div className='loop-username-container'>
+                        <div onClick={async e => {
+                            e.preventDefault();
+                            const value = await greetingsService.sayHello();
+                            console.log(value);
+                        }} className='loop-username-container'>
                             <label className='loop-info'>
                                 {message}
                             </label>

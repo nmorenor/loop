@@ -6,6 +6,7 @@ export const LoopSequelize = Symbol('LoopSequelize');
 export const SequelizeModelContribution = Symbol('SequelizeModelContribution');
 export interface SequelizeModelContribution {
     initialize(sequelize: Sequelize): void;
+    configure(sequelize: Sequelize): void;
 }
 
 export const ModelServiceContribution = Symbol('ModelServiceContribution');
@@ -65,10 +66,13 @@ export class DataModelsManager implements BackendApplicationContribution {
         this.container.bind(LoopSequelize).toConstantValue(this.sequelize);
         console.log('Database connection has been established successfully.');
 
-        this.modelContributionsProvider.getContributions().forEach(next => {
+        this.modelContributionsProvider.getContributions().forEach((next: SequelizeModelContribution) => {
             next.initialize(this.sequelize);
         });
-        this.modelServiceContributionsProvider.getContributions().forEach(async next => {
+        this.modelContributionsProvider.getContributions().forEach((next: SequelizeModelContribution) => {
+            next.configure(this.sequelize);
+        });
+        this.modelServiceContributionsProvider.getContributions().forEach(async (next: ModelServiceContribution) => {
             await next.start();
         });
     }
@@ -77,7 +81,7 @@ export class DataModelsManager implements BackendApplicationContribution {
      * called when process is terminated
      */
     public stop(): void {
-        this.modelServiceContributionsProvider.getContributions().forEach(next => {
+        this.modelServiceContributionsProvider.getContributions().forEach((next: ModelServiceContribution) => {
             next.stop();
         });
         this.sequelize.close();

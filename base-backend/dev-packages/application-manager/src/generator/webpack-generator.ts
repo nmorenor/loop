@@ -55,13 +55,10 @@ const development = mode === 'development';${this.ifMonaco(() => `
 const monacoEditorCorePath = development ? '${this.resolve('@theia/monaco-editor-core', 'dev/vs')}' : '${this.resolve('@theia/monaco-editor-core', 'min/vs')}';
 // const monacoCssLanguagePath = '${this.resolve('monaco-css', 'release/min')}';`)}
 
-const plugins = [new CopyWebpackPlugin([${this.ifMonaco(() => `
-    {
-        from: monacoEditorCorePath,
-        to: 'vs'
-    },
-    `)}
-])];
+const plugins = [new webpack.ProvidePlugin({
+    // the Buffer class doesn't exist in the browser but some dependencies rely on it
+    Buffer: ['buffer', 'Buffer']
+})];
 // it should go after copy-plugin in order to compress monaco as well
 if (staticCompression) {
     plugins.push(new CompressionPlugin({
@@ -75,57 +72,59 @@ plugins.push(new CircularDependencyPlugin({
 }));
 
 module.exports = {
+    mode,
+    plugins,
+    devtool: 'source-map',
     entry: path.resolve(__dirname, 'src-gen/frontend/index.js'),
     output: {
         filename: 'bundle.js',
-        path: outputPath
+        path: outputPath,
+        devtoolModuleFilenameTemplate: 'webpack:///[resource-path]?[loaders]'
     },
     target: '${this.ifBrowser('web', 'electron-renderer')}',
-    mode,
-    node: {${this.ifElectron(`
-        __dirname: false,
-        __filename: false`, `
-        fs: 'empty',
-        child_process: 'empty',
-        net: 'empty',
-        crypto: 'empty'`)}
-    },
+    cache: staticCompression,
     module: {
         rules: [
             {
-                test: /worker-main\\.js$/,
-                loader: 'worker-loader',
-                options: {
-                    name: 'worker-ext.[hash].js'
-                }
-            },
-            {
                 test: /\\.css$/,
                 exclude: /materialcolors\\.css$|\\.useable\\.css$/,
-                loader: 'style-loader!css-loader'
+                use: ['style-loader', 'css-loader']
             },
             {
                 test: /materialcolors\\.css$|\\.useable\\.css$/,
                 use: [
-                  {
-                    loader: 'style-loader/useable',
-                    options: {
-                      singleton: true,
-                      attrs: { id: 'theia-theme' },
-                    }
-                  },
-                  'css-loader'
+                    {
+                        loader: 'style-loader',
+                        options: {
+                            esModule: false,
+                            injectType: 'lazySingletonStyleTag',
+                            attributes: {
+                                id: 'theia-theme'
+                            }
+                        }
+                    },
+                    'css-loader'
                 ]
             },
             {
                 test: /\\.(ttf|eot|svg)(\\?v=\\d+\\.\\d+\\.\\d+)?$/,
-                loader: 'url-loader?limit=10000&mimetype=image/svg+xml'
+                type: 'asset',
+                parser: {
+                    dataUrlCondition: {
+                        maxSize: 10000,
+                    }
+                },
+                generator: {
+                    dataUrl: {
+                        mimetype: 'image/svg+xml'
+                    }
+                }
             },
             {
                 test: /\\.(jpg|png|gif)$/,
-                loader: 'file-loader',
-                options: {
-                    name: '[hash].[ext]',
+                type: 'asset/resource',
+                generator: {
+                    filename: '[hash].[ext]'
                 }
             },
             {
@@ -137,24 +136,33 @@ module.exports = {
                 test: /\\.js$/,
                 enforce: 'pre',
                 loader: 'source-map-loader',
-                exclude: /jsonc-parser|fast-plist|onigasm|(monaco-editor.*)/
+                exclude: /jsonc-parser|fast-plist|onigasm/
             },
             {
                 test: /\\.woff(2)?(\\?v=[0-9]\\.[0-9]\\.[0-9])?$/,
-                loader: "url-loader?limit=10000&mimetype=application/font-woff"
+                type: 'asset',
+                parser: {
+                    dataUrlCondition: {
+                        maxSize: 10000,
+                    }
+                },
+                generator: {
+                    dataUrl: {
+                        mimetype: 'image/svg+xml'
+                    }
+                }
             },
             {
-                test: /node_modules[\\\\|\/](vscode-languageserver-types|vscode-uri|jsonc-parser)/,
-                use: { loader: 'umd-compat-loader' }
+                test: /node_modules[\\\\|\/](vscode-languageserver-types|vscode-uri|jsonc-parser|vscode-languageserver-protocol)/,
+                loader: 'umd-compat-loader'
             },
             {
                 test: /\\.wasm$/,
-                loader: "file-loader",
-                type: "javascript/auto",
+                type: 'asset/resource'
             },
             {
                 test: /\\.plist$/,
-                loader: "file-loader",
+                type: 'asset/resource'
             },
             {
                 test: /\\.js$/,
@@ -179,16 +187,23 @@ module.exports = {
         ]
     },
     resolve: {
+        fallback: {
+            'child_process': false,
+            'crypto': false,
+            'net': false,
+            'path': false,
+            'process': false,
+            'os': false,
+            'timers': false
+        },
         extensions: ['.js']${this.ifMonaco(() => `,
         alias: {
-            'vs': path.resolve(outputPath, monacoEditorCorePath),
-            'vscode': require.resolve('monaco-languageclient/lib/vscode-compatibility')
+            'vs': path.resolve(outputPath, monacoEditorCorePath)
         }`)}
     },
-    devtool: 'source-map',
-    plugins,
     stats: {
-        warnings: true
+        warnings: true,
+        children: true
     }
 };`;
     }

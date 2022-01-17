@@ -5,6 +5,7 @@ import { ApplicationPackage } from '@theia/application-package';
 import { ApplicationConfigProvider, BackendApplication, BackendApplicationCliContribution, BackendApplicationContribution } from './backend-application';
 import { ConnectionContainerModule } from './messaging/connection-container-module';
 import { MessageClient, MessageService, messageServicePath } from '../common';
+import { WsRequestValidator, WsRequestValidatorContribution } from './ws-request-validators';
 
 const messageConnectionModule = ConnectionContainerModule.create(({ bind, bindFrontendService }) => {
     bindFrontendService(messageServicePath, MessageClient);
@@ -27,4 +28,6 @@ export const backendApplicationModule = new ContainerModule(bind => {
         const { projectPath } = container.get(BackendApplicationCliContribution);
         return new ApplicationPackage({ projectPath });
     }).inSingletonScope();
+    bind(WsRequestValidator).toSelf().inSingletonScope();
+    bindContributionProvider(bind, WsRequestValidatorContribution);
 });

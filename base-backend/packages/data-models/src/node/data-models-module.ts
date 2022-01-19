@@ -1,11 +1,11 @@
 import { ContainerModule } from 'inversify';
-import { HostsMonitor } from './services/hosts-monitor';
+import { RegionsMonitor } from './services/regions-monitor';
 import { ContinentModelContribution } from './model/region-model';
 import { DataModelsManager, ModelServiceContribution, SequelizeModelContribution } from './data-models-manager';
-import { GeoIpService } from './services/geo-ip';
 import { bindContributionProvider, BackendApplicationContribution, ConnectionHandler, JsonRpcConnectionHandler } from '@loop/core/lib';
-import { GreetingsService, GreetingsServiceClient } from '@loop/core/lib/common/services/greetings';
-import { GreetingsServiceServerImpl } from './data-test';
+import { RegionsService, RegionsServiceClient, regionsPath } from '@loop/core/lib/common/services/regions';
+import { RegionClientsManager, RegionRepository, RegionClientsManagerService, RegionRepositoryService } from './model/region-repository';
+import { RegionsServiceServerImpl } from './services/regions-service';
 
 export default new ContainerModule(bind => {
     bind(DataModelsManager).toSelf().inSingletonScope();
@@ -17,16 +17,25 @@ export default new ContainerModule(bind => {
     bind(ContinentModelContribution).toSelf();
     bind(SequelizeModelContribution).toDynamicValue(ctx => ctx.container.get(ContinentModelContribution));
 
-    bind(GeoIpService).toSelf().inSingletonScope();
-    bind(HostsMonitor).toSelf();
-    bind(ModelServiceContribution).toDynamicValue(ctx => ctx.container.get(HostsMonitor));
-    bind(ModelServiceContribution).toDynamicValue(ctx => ctx.container.get(GeoIpService));
+    bind(RegionsMonitor).toSelf().inSingletonScope();
+    bind(ModelServiceContribution).toDynamicValue(ctx => ctx.container.get(RegionsMonitor));
 
-    bind(GreetingsServiceServerImpl).toSelf();
-    bind(GreetingsService).to(GreetingsServiceServerImpl);
+    bind(RegionRepository).toSelf().inSingletonScope().onActivation((context, target) => {
+        context.container.bind(RegionRepositoryService).toConstantValue(target);
+        return target;
+    });
+    bind(RegionClientsManager).toSelf().inSingletonScope().onActivation((context, target) => {
+        context.container.bind(RegionClientsManagerService).toConstantValue(target);
+        return target;
+    });
+
+    bind(RegionsServiceServerImpl).toSelf();
+    bind(RegionsService).to(RegionsServiceServerImpl);
     bind(ConnectionHandler).toDynamicValue(context =>
-        new JsonRpcConnectionHandler<GreetingsServiceClient>('/services/greetings', client => {
-            const server = context.container.get<GreetingsServiceServerImpl>(GreetingsServiceServerImpl);
+        new JsonRpcConnectionHandler<RegionsServiceClient>(regionsPath, client => {
+            const server = context.container.get<RegionsServiceServerImpl>(RegionsServiceServerImpl);
+            server.regionRepository = context.container.get<RegionRepository>(RegionRepositoryService);
+            server.regionClientsManager = context.container.get<RegionClientsManager>(RegionClientsManagerService);
             server.setClient(client);
             const closeDispose = client.onDidCloseConnection(() => {
                 server.dispose();

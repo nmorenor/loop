@@ -1,6 +1,7 @@
 import { ContributionProvider, LoopContainer, ApplicationConfigProvider, BackendApplicationContribution } from '@loop/core/lib';
 import { injectable, interfaces, inject, LazyServiceIdentifer, named } from 'inversify';
 import { Sequelize } from 'sequelize';
+import { RegionClientsManager, RegionRepository } from './model/region-repository';
 
 export const LoopSequelize = Symbol('LoopSequelize');
 export const SequelizeModelContribution = Symbol('SequelizeModelContribution');
@@ -32,7 +33,9 @@ export class DataModelsManager implements BackendApplicationContribution {
         protected readonly modelContributionsProvider: ContributionProvider<SequelizeModelContribution>,
         @inject(ContributionProvider) @named(ModelServiceContribution)
         protected readonly modelServiceContributionsProvider: ContributionProvider<ModelServiceContribution>,
-        @inject(ApplicationConfigProvider) protected readonly appConfig: ApplicationConfigProvider
+        @inject(ApplicationConfigProvider) protected readonly appConfig: ApplicationConfigProvider,
+        @inject(RegionRepository) protected readonly regionRepository: RegionRepository,
+        @inject(RegionClientsManager) protected readonly regionClients: RegionClientsManager
     ) {
         // validate db config
         if (!this.appConfig

@@ -8,7 +8,7 @@ import { Region } from '../model/region-model';
  * Monitor Hosts Health
  */
 @injectable()
-export class HostsMonitor implements ModelServiceContribution {
+export class RegionsMonitor implements ModelServiceContribution {
     private interval: NodeJS.Timeout | undefined;
     constructor(
         @inject(new LazyServiceIdentifer(() => LoopContainer)) private container: interfaces.Container,

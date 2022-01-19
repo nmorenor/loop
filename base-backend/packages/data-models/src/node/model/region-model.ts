@@ -1,14 +1,14 @@
 import { injectable } from 'inversify';
-import { DataTypes, Model, Sequelize } from 'sequelize';
+import { RegionAttributes } from '@loop/core/src/common/services/regions';
+import { DataTypes, Model, Sequelize, Optional } from 'sequelize';
 import { SequelizeModelContribution } from '../data-models-manager';
-export class Region extends Model {
-    // such empty
-}
 
-export class SubRegion extends Model {
-    // such empty
-}
+interface RegionCreationAttributes extends Optional<RegionAttributes, 'code'> {}
 
+export class Region extends Model<RegionAttributes, RegionCreationAttributes> implements RegionAttributes {
+    public code!: string;
+    public name!: string;
+}
 @injectable()
 export class ContinentModelContribution implements SequelizeModelContribution {
     initialize(sequelize: Sequelize): void {

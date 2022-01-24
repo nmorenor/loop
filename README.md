@@ -4,7 +4,7 @@ Loop is a base proyect for a backend application, it can be extended as start fo
 
 # Background
 
-I've been playing with the Eclipse Theia project and did like what I saw so I did spend some time extracting some code and modifying it to build this project. Right now it just contains an example of what can be done, the browser communicates with the backend via WebSocket and persist the data on the database.
+I've been playing with the Eclipse Theia project and did like what I saw so I did spend some time extracting some code and modifying it to build this project. Right now it just contains an example of what can be done, the browser communicates with the backend via WebSocket and persist the data on the database. Any ideas on improvements are welcome.
 
 # Configuration
 

@@ -91,11 +91,11 @@ div.loop-box .loop-inner-box .loop-button {
     margin-top: auto;
 }
 
-body.vs div#codetogether .loop-ide-info {
+body.vs div#loop .loop-ide-info {
     color: black;
 }
 
-body.vs div#codetogether .loop-ide-to-ide {
+body.vs div#loop .loop-ide-to-ide {
     color: black;
 }
 

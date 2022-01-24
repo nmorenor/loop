@@ -86,7 +86,7 @@ export namespace ApplicationProps {
                     const isEdge = (userAgent.indexOf('Edge/') >= 0);
                     const isCompatibleEdge = (userAgent.indexOf('Edge/44.19') >= 0);
                     if ((isIE || (isEdge && !isCompatibleEdge))) {
-                        window.location.assign('https://codetogether.com/compatibility');
+                        alert('not compatible browser');
                     }
                 }
                 browserIECheck()

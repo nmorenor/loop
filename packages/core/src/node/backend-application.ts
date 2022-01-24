@@ -2,7 +2,6 @@ import { injectable, inject, named, postConstruct } from 'inversify';
 import express from 'express';
 import * as http from 'http';
 import * as yargs from 'yargs';
-import { AddressInfo } from 'net';
 import * as path from 'path';
 import * as fs from 'fs-extra';
 import { parse } from 'comment-json';
@@ -155,8 +154,6 @@ export class BackendApplication {
         });
 
         server.listen(port, hostname, () => {
-            const scheme = 'http';
-            console.info(`CodeTogether Locator is listening on ${scheme}://${hostname || 'localhost'}:${(server.address() as AddressInfo).port}.`);
             deferred.resolve(server);
         });
 

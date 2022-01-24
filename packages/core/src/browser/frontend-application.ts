@@ -20,7 +20,7 @@ export class FrontendApplication {
 
         const body = await this.getHost();
         const ctEntry = document.createElement('div');
-        ctEntry.setAttribute('id', 'codetogether');
+        ctEntry.setAttribute('id', 'loop');
         ctEntry.classList.add('loop-out-box');
         body.appendChild(ctEntry);
 

@@ -6,6 +6,10 @@ import { bindContributionProvider, BackendApplicationContribution, ConnectionHan
 import { RegionsService, RegionsServiceClient, regionsPath } from '@loop/core/lib/common/services/regions';
 import { RegionClientsManager, RegionRepository, RegionClientsManagerService, RegionRepositoryService } from './model/region-repository';
 import { RegionsServiceServerImpl } from './services/regions-service';
+import { GroupModelContribution, UserGroupRelationModelContribution, UserModelContribution } from './model/users-model';
+import { UsersRepository } from './model/users-repository';
+import { AuthServiceServerImpl, InstallServiceServerImpl, SystemStateServiceServerImpl } from './services/users-service';
+import { authPath, AuthServiceClient, systemInstallPath, SystemStateClient, systemStatePath } from '@loop/core/lib/common/services/users';
 
 export default new ContainerModule(bind => {
     bind(DataModelsManager).toSelf().inSingletonScope();
@@ -15,7 +19,13 @@ export default new ContainerModule(bind => {
     bindContributionProvider(bind, ModelServiceContribution);
 
     bind(ContinentModelContribution).toSelf();
+    bind(UserModelContribution).toSelf();
+    bind(GroupModelContribution).toSelf();
+    bind(UserGroupRelationModelContribution).toSelf();
     bind(SequelizeModelContribution).toDynamicValue(ctx => ctx.container.get(ContinentModelContribution));
+    bind(SequelizeModelContribution).toDynamicValue(ctx => ctx.container.get(UserModelContribution));
+    bind(SequelizeModelContribution).toDynamicValue(ctx => ctx.container.get(GroupModelContribution));
+    bind(SequelizeModelContribution).toDynamicValue(ctx => ctx.container.get(UserGroupRelationModelContribution));
 
     bind(RegionsMonitor).toSelf().inSingletonScope();
     bind(ModelServiceContribution).toDynamicValue(ctx => ctx.container.get(RegionsMonitor));
@@ -36,6 +46,45 @@ export default new ContainerModule(bind => {
             const server = context.container.get<RegionsServiceServerImpl>(RegionsServiceServerImpl);
             server.regionRepository = context.container.get<RegionRepository>(RegionRepositoryService);
             server.regionClientsManager = context.container.get<RegionClientsManager>(RegionClientsManagerService);
+            server.setClient(client);
+            const closeDispose = client.onDidCloseConnection(() => {
+                server.dispose();
+                closeDispose.dispose();
+            });
+            return server;
+        })
+    ).inSingletonScope();
+
+    bind(UsersRepository).toSelf().inSingletonScope();
+    bind(SystemStateServiceServerImpl).toSelf();
+    bind(InstallServiceServerImpl).toSelf();
+    bind(AuthServiceServerImpl).toSelf();
+
+    bind(ConnectionHandler).toDynamicValue(({ container }) =>
+        new JsonRpcConnectionHandler<SystemStateClient>(systemStatePath, client => {
+            const server = container.get<SystemStateServiceServerImpl>(SystemStateServiceServerImpl);
+            server.setClient(client);
+            const closeDispose = client.onDidCloseConnection(() => {
+                server.dispose();
+                closeDispose.dispose();
+            });
+            return server;
+        })
+    ).inSingletonScope();
+    bind(ConnectionHandler).toDynamicValue(({ container }) =>
+        new JsonRpcConnectionHandler<SystemStateClient>(systemInstallPath, client => {
+            const server = container.get<InstallServiceServerImpl>(InstallServiceServerImpl);
+            server.setClient(client);
+            const closeDispose = client.onDidCloseConnection(() => {
+                server.dispose();
+                closeDispose.dispose();
+            });
+            return server;
+        })
+    ).inSingletonScope();
+    bind(ConnectionHandler).toDynamicValue(({ container }) =>
+        new JsonRpcConnectionHandler<AuthServiceClient>(authPath, client => {
+            const server = container.get<AuthServiceServerImpl>(AuthServiceServerImpl);
             server.setClient(client);
             const closeDispose = client.onDidCloseConnection(() => {
                 server.dispose();

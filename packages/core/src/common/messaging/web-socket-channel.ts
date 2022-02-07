@@ -170,3 +170,7 @@ export namespace WebSocketChannel {
     }
     export type Message = OpenMessage | ReadyMessage | DataMessage | CloseMessage;
 }
+
+export class AuthenticatedWebSocketChannel extends WebSocketChannel {
+    static wsPath = '/private/services';
+}

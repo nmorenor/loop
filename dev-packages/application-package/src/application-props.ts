@@ -79,18 +79,7 @@ export namespace ApplicationProps {
         },
         generator: {
             config: {
-                preloadTemplate: `<script>
-                function browserIECheck() {
-                    const userAgent = navigator.userAgent;
-                    const isIE = (userAgent.indexOf('Trident') >= 0);
-                    const isEdge = (userAgent.indexOf('Edge/') >= 0);
-                    const isCompatibleEdge = (userAgent.indexOf('Edge/44.19') >= 0);
-                    if ((isIE || (isEdge && !isCompatibleEdge))) {
-                        alert('not compatible browser');
-                    }
-                }
-                browserIECheck()
-            </script> `
+                preloadTemplate: '<script></script>'
             }
         }
     };

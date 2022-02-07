@@ -17,6 +17,7 @@
 import { MessageConnection } from 'vscode-ws-jsonrpc';
 
 export const ConnectionHandler = Symbol('ConnectionHandler');
+export const AuthenticatedConnectionHandler = Symbol('AuthenticatedConnectionHandler');
 
 export interface ConnectionHandler {
     readonly path: string;

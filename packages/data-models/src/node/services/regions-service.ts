@@ -1,4 +1,3 @@
-
 import { JsonRpcServer } from '@loop/core/lib/common/messaging';
 import { injectable } from 'inversify';
 import { RegionAttributes, RegionsService, RegionsServiceClient } from '@loop/core/lib/common/services/regions';

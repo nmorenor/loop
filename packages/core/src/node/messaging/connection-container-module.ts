@@ -17,7 +17,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { interfaces, ContainerModule } from 'inversify';
-import { JsonRpcProxyFactory, ConnectionHandler, JsonRpcConnectionHandler, JsonRpcProxy } from '../../common';
+import { JsonRpcProxyFactory, ConnectionHandler, JsonRpcConnectionHandler, JsonRpcProxy, AuthenticatedConnectionHandler } from '../../common';
 
 export type BindFrontendService = <T extends object>(path: string, serviceIdentifier: interfaces.ServiceIdentifier<T>) => interfaces.BindingWhenOnSyntax<T>;
 export type BindBackendService = <T extends object, C extends object = object>(
@@ -84,6 +84,31 @@ export const ConnectionContainerModule: symbol & { create(callback: ConnectionCo
             };
             const bindBackendService: BindBackendService = (path, serviceIdentifier, onActivation) => {
                 bind(ConnectionHandler).toDynamicValue(context =>
+                    new JsonRpcConnectionHandler<any>(path, proxy => {
+                        const service = context.container.get(serviceIdentifier);
+                        return onActivation ? onActivation(service, proxy) : service;
+                    })
+                ).inSingletonScope();
+            };
+            callback({ bind, unbind, isBound, rebind, bindFrontendService, bindBackendService });
+        });
+    }
+});
+
+export const AuthenticatedConnectionContainerModule: symbol & { create(callback: ConnectionContainerModuleCallBack): ContainerModule } = Object.assign(Symbol('AuthenticatedConnectionContainerModule'), {
+    create(callback: ConnectionContainerModuleCallBack): ContainerModule {
+        return new ContainerModule((bind, unbind, isBound, rebind) => {
+            const bindFrontendService: BindFrontendService = (path, serviceIdentifier) => {
+                const serviceFactory = new JsonRpcProxyFactory();
+                const service = serviceFactory.createProxy();
+                bind<ConnectionHandler>(AuthenticatedConnectionHandler).toConstantValue({
+                    path,
+                    onConnection: connection => serviceFactory.listen(connection)
+                });
+                return bind(serviceIdentifier).toConstantValue(service as any);
+            };
+            const bindBackendService: BindBackendService = (path, serviceIdentifier, onActivation) => {
+                bind(AuthenticatedConnectionHandler).toDynamicValue(context =>
                     new JsonRpcConnectionHandler<any>(path, proxy => {
                         const service = context.container.get(serviceIdentifier);
                         return onActivation ? onActivation(service, proxy) : service;

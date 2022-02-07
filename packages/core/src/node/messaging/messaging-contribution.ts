@@ -45,8 +45,8 @@ export class MessagingContribution implements BackendApplicationContribution, Me
     @inject(MessagingContainer)
     protected readonly container: interfaces.Container;
 
-    @inject(ContributionProvider) @named(ConnectionContainerModule)
-    protected readonly connectionModules: ContributionProvider<interfaces.ContainerModule>;
+    // @inject(ContributionProvider) @named(ConnectionContainerModule)
+    protected connectionModules: ContributionProvider<interfaces.ContainerModule> | undefined = undefined;
 
     @inject(ContributionProvider) @named(MessagingService.Contribution)
     protected readonly contributions: ContributionProvider<MessagingService.Contribution>;
@@ -248,7 +248,7 @@ export class MessagingContribution implements BackendApplicationContribution, Me
     protected getConnectionChannelHandlers(socket: ws): MessagingContribution.ConnectionHandlers<WebSocketChannel> {
         const connectionContainer = this.createSocketContainer(socket);
         bindContributionProvider(connectionContainer, ConnectionHandler);
-        connectionContainer.load(...this.connectionModules.getContributions());
+        connectionContainer.load(...this.getConnectionModules().getContributions());
         const connectionChannelHandlers = new MessagingContribution.ConnectionHandlers(this.channelHandlers);
         const connectionHandlers = connectionContainer.getNamed<ContributionProvider<ConnectionHandler>>(ContributionProvider, ConnectionHandler);
         for (const connectionHandler of connectionHandlers.getContributions(true)) {
@@ -258,6 +258,14 @@ export class MessagingContribution implements BackendApplicationContribution, Me
             });
         }
         return connectionChannelHandlers;
+    }
+
+    protected getConnectionModules(): ContributionProvider<interfaces.ContainerModule> {
+        if (this.connectionModules) {
+            return this.connectionModules;
+        }
+        this.connectionModules = this.container.getNamed<ContributionProvider<interfaces.ContainerModule>>(ContributionProvider, ConnectionContainerModule);
+        return this.connectionModules;
     }
 
     protected createChannel(id: number, socket: ws): WebSocketChannel {

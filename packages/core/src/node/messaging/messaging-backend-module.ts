@@ -18,21 +18,30 @@ import { ContainerModule } from 'inversify';
 import { bindContributionProvider } from '../../common';
 import { BackendApplicationContribution } from '../backend-application';
 import { MessagingContribution, MessagingContainer } from './messaging-contribution';
-import { ConnectionContainerModule } from './connection-container-module';
+import { AuthenticatedConnectionContainerModule, ConnectionContainerModule } from './connection-container-module';
 import { MessagingService } from './messaging-service';
 import { MessagingListener, MessagingListenerContribution } from './messaging-listeners';
 import { DEFAULT_HTTP_WEBSOCKET_ADAPTER_TIMEOUT, HttpWebsocketAdapter, HttpWebsocketAdapterFactory, HttpWebsocketAdapterTimeout } from './http-websocket-adapter';
+import { AuthenticatedMessagingContribution } from './authenticated-messaging-contribution';
 
 export const messagingBackendModule = new ContainerModule(bind => {
     bindContributionProvider(bind, ConnectionContainerModule);
+    bindContributionProvider(bind, AuthenticatedConnectionContainerModule);
     bindContributionProvider(bind, MessagingService.Contribution);
     bind(MessagingService.Identifier).to(MessagingContribution).inSingletonScope();
+    bind(MessagingService.AuthIdentifier).to(AuthenticatedMessagingContribution).inSingletonScope();
     bind(MessagingContribution).toDynamicValue(({ container }) => {
         const child = container.createChild();
         child.bind(MessagingContainer).toConstantValue(container);
         return child.get(MessagingService.Identifier);
     }).inSingletonScope();
+    bind(AuthenticatedMessagingContribution).toDynamicValue(({ container }) => {
+        const child = container.createChild();
+        child.bind(MessagingContainer).toConstantValue(container);
+        return child.get(MessagingService.AuthIdentifier);
+    }).inSingletonScope();
     bind(BackendApplicationContribution).toService(MessagingContribution);
+    bind(BackendApplicationContribution).toService(AuthenticatedMessagingContribution);
     bind(MessagingListener).toSelf().inSingletonScope();
     bindContributionProvider(bind, MessagingListenerContribution);
     bind(HttpWebsocketAdapter).toSelf();

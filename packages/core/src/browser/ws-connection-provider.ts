@@ -15,21 +15,28 @@
  ********************************************************************************/
 
 import { injectable, interfaces, decorate, unmanaged, inject, optional } from 'inversify';
-import { JsonRpcProxyFactory, JsonRpcProxy, Emitter, Event, MessageService, MessageServiceFactory } from '../../common';
-import { WebSocketChannel } from '../../common/messaging/web-socket-channel';
-import { Endpoint } from '../endpoint';
+import { JsonRpcProxyFactory, JsonRpcProxy, Emitter, Event, MessageService, MessageServiceFactory } from '../common';
+import { AuthenticatedWebSocketChannel, WebSocketChannel } from '../common/messaging/web-socket-channel';
+import { Endpoint } from './endpoint';
 import ReconnectingWebSocket from 'reconnecting-websocket';
-import { AbstractConnectionProvider } from '../../common/messaging/abstract-connection-provider';
+import { AbstractConnectionProvider } from '../common/messaging/abstract-connection-provider';
 import { v4 as uuid } from 'uuid';
 
 decorate(injectable(), JsonRpcProxyFactory);
-decorate(unmanaged(), JsonRpcProxyFactory, 0);
+decorate((unmanaged() as any), JsonRpcProxyFactory, 0);
 
 export interface WebSocketOptions {
     /**
      * True by default.
      */
     reconnecting?: boolean;
+}
+
+export class LoopWebSocket extends WebSocket {
+    // tslint:disable-next-line: no-any
+    constructor(address: string, protocols?: string | string[]) {
+        super(address, protocols);
+    }
 }
 
 export const HttpFallbackOptions = Symbol('HttpFallbackOptions');
@@ -91,7 +98,7 @@ export class WebSocketConnectionProvider extends AbstractConnectionProvider<WebS
 
     constructor() {
         super();
-        const url = this.createWebSocketUrl(WebSocketChannel.wsPath);
+        const url = this.createWebSocketUrl(this.getWebSocketPath());
         const socket = this.createWebSocket(url);
         socket.onerror = event => this.handleSocketError(event);
         socket.onopen = () => {
@@ -117,7 +124,7 @@ export class WebSocketConnectionProvider extends AbstractConnectionProvider<WebS
         if (this.httpFallbackOptions?.allowed && this.websocketErrorCounter >= this.httpFallbackOptions?.maxAttempts) {
             this.useHttpFallback = true;
             this.socket.close();
-            const httpUrl = this.createHttpWebSocketUrl(WebSocketChannel.wsPath);
+            const httpUrl = this.createHttpWebSocketUrl(this.getWebSocketPath());
             this.onHttpFallbackDidActivateEmitter.fire(undefined);
             this.doLongPolling(httpUrl);
             this.messageService().warn(
@@ -125,6 +132,10 @@ export class WebSocketConnectionProvider extends AbstractConnectionProvider<WebS
             );
         }
         console.error(event);
+    }
+
+    protected getWebSocketPath(): string {
+        return WebSocketChannel.wsPath;
     }
 
     async doLongPolling(url: string): Promise<void> {
@@ -180,7 +191,7 @@ export class WebSocketConnectionProvider extends AbstractConnectionProvider<WebS
     }
 
     protected createChannel(id: number): WebSocketChannel {
-        const httpUrl = this.createHttpWebSocketUrl(WebSocketChannel.wsPath);
+        const httpUrl = this.createHttpWebSocketUrl(this.getWebSocketPath());
         return new WebSocketChannel(id, content => {
             if (this.useHttpFallback) {
                 fetch(httpUrl, {
@@ -214,6 +225,7 @@ export class WebSocketConnectionProvider extends AbstractConnectionProvider<WebS
      */
     protected createWebSocket(url: string): ReconnectingWebSocket {
         return new ReconnectingWebSocket(url, undefined, {
+            WebSocket: LoopWebSocket,
             maxReconnectionDelay: 10000,
             minReconnectionDelay: 1000,
             reconnectionDelayGrowFactor: 1.3,
@@ -236,5 +248,41 @@ export class WebSocketConnectionProvider extends AbstractConnectionProvider<WebS
             this.socket.reconnect();
         }
     }
+}
 
+@injectable()
+export class AuthenticatedWebSocketTokenProvider {
+    private token: string = 'Not Authorized';
+    setToken(token: string) {
+        this.token = token;
+    }
+    getToken(): string {
+        return this.token;
+    }
+}
+
+@injectable()
+export class AuthenticatedWebSocketConnectionProvider extends WebSocketConnectionProvider {
+    @inject(AuthenticatedWebSocketTokenProvider)
+    private readonly tokenProvider: AuthenticatedWebSocketTokenProvider;
+    protected getWebSocketPath(): string {
+        return `${AuthenticatedWebSocketChannel.wsPath}?authorization=${this.tokenProvider.getToken()}`;
+    }
+
+    protected createChannel(id: number): WebSocketChannel {
+        const httpUrl = this.createHttpWebSocketUrl(this.getWebSocketPath());
+        return new AuthenticatedWebSocketChannel(id, content => {
+            if (this.useHttpFallback) {
+                fetch(httpUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id: this.httpFallbackId, content })
+                });
+            } else if (this.socket.readyState < WebSocket.CLOSING) {
+                this.socket.send(content);
+            }
+        });
+    }
 }

@@ -5,6 +5,7 @@
   "dependencies": {
     "@loop/core": "1.0.0",
     "sequelize": "^6.6.5",
+    "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.2.5"
   },
   "loopExtensions": [

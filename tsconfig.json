@@ -31,6 +31,9 @@
       },
       "strict": true
     },
+    "types": [
+      "@emotion/react/types/css-prop"
+    ],
     "include": [
       "dev-packages/*/src/",
       "packages/*/src/",

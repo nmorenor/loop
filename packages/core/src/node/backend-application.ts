@@ -13,6 +13,8 @@ import { Deferred } from '../common/promise-util';
 
 export interface ApplicationConfig {
     database: DatabaseConfig;
+    // tslint:disable-next-line: no-any
+    [name: string]: any;
 }
 
 export interface DatabaseConfig {
@@ -156,7 +158,7 @@ export class BackendApplication {
 
         server.listen(port, hostname, () => {
             const scheme = 'http';
-            console.info(`Loop is listening on ${scheme}://${hostname || 'localhost'}:${(server.address() as AddressInfo).port}.`);
+            console.info(`Loops is listening on ${scheme}://${hostname || 'localhost'}:${(server.address() as AddressInfo).port}.`);
             deferred.resolve(server);
         });
 

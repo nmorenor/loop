@@ -4,8 +4,11 @@ import { CliContribution, CliManager } from './cli';
 import { ApplicationPackage } from '@theia/application-package';
 import { ApplicationConfigProvider, BackendApplication, BackendApplicationCliContribution, BackendApplicationContribution } from './backend-application';
 import { ConnectionContainerModule } from './messaging/connection-container-module';
-import { MessageClient, MessageService, messageServicePath } from '../common';
+import { ConnectionHandler, JsonRpcConnectionHandler, MessageClient, MessageService, messageServicePath } from '../common';
 import { WsRequestValidator, WsRequestValidatorContribution } from './ws-request-validators';
+import { AuthenticatedWsRequestValidatorContribution } from './messaging/authenticated-messaging-contribution';
+import { envVariablesPath, EnvVariablesServer } from '../common/env-variables';
+import { EnvVariablesServerImpl } from './env-variables';
 
 const messageConnectionModule = ConnectionContainerModule.create(({ bind, bindFrontendService }) => {
     bindFrontendService(messageServicePath, MessageClient);
@@ -30,4 +33,14 @@ export const backendApplicationModule = new ContainerModule(bind => {
     }).inSingletonScope();
     bind(WsRequestValidator).toSelf().inSingletonScope();
     bindContributionProvider(bind, WsRequestValidatorContribution);
+    bind(AuthenticatedWsRequestValidatorContribution).toSelf().inSingletonScope();
+    bind(WsRequestValidatorContribution).toService(AuthenticatedWsRequestValidatorContribution);
+
+    bind(EnvVariablesServer).to(EnvVariablesServerImpl).inSingletonScope();
+    bind(ConnectionHandler).toDynamicValue(ctx =>
+        new JsonRpcConnectionHandler(envVariablesPath, () => {
+            const envVariablesServer = ctx.container.get<EnvVariablesServer>(EnvVariablesServer);
+            return envVariablesServer;
+        })
+    ).inSingletonScope();
 });

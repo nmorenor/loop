@@ -48,6 +48,7 @@ export interface MessagingService {
 export namespace MessagingService {
     /** Inversify container identifier for the `MessagingService` component. */
     export const Identifier = Symbol('MessagingService');
+    export const AuthIdentifier = Symbol('AuthMessagingService');
     export interface PathParams {
         [name: string]: string
     }

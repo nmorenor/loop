@@ -5,7 +5,7 @@ import { ModelServiceContribution, LoopSequelize } from '../data-models-manager'
 import { Region } from '../model/region-model';
 
 /**
- * Monitor Hosts Health
+ * Example Model Service
  */
 @injectable()
 export class RegionsMonitor implements ModelServiceContribution {
@@ -28,7 +28,6 @@ export class RegionsMonitor implements ModelServiceContribution {
         this.container.unbind(LoopSequelize);
     }
     private async processHosts(): Promise<void> {
-        // TODO: search hosts by continent and monitor hosts status via http
         const continents = await Region.findAll();
         continents.forEach((next: Region) => {
             console.log(next.get('name') + ' - ' + next.get('code'));

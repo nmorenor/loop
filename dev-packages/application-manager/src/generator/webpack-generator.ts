@@ -176,7 +176,8 @@ module.exports = {
                             // reuse runtime babel lib instead of generating it in each js file
                             '@babel/plugin-transform-runtime',
                             // ensure that classes are transpiled
-                            '@babel/plugin-transform-classes'
+                            '@babel/plugin-transform-classes',
+                            'emotion'
                         ],
                         // see https://github.com/babel/babel/issues/8900#issuecomment-431240426
                         sourceType: 'unambiguous',

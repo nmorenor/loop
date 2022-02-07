@@ -9,6 +9,9 @@ import { RegionsClient } from './services/region-service';
 import { WebSocketConnectionProvider } from './messaging';
 import { ConnectionStatusService, FrontendConnectionStatusService, PingService } from './connection-status-service';
 import { EnvVariable, envVariablesPath, EnvVariablesServer } from '../common/env-variables';
+import { RoutesApplicationContribution } from '../common/routes/routes';
+import { FrontEndRoutesProvider } from './routes-provider';
+import { HeroesPageContribution } from './pages/heroes/contribution';
 
 export function bindMessageService(bind: interfaces.Bind): interfaces.BindingWhenOnSyntax<MessageService> {
     bind(MessageClient).toSelf().inSingletonScope();
@@ -49,4 +52,9 @@ export const frontendApplicationModule = new ContainerModule(bind => {
             }
         };
     });
+    bindContributionProvider(bind, RoutesApplicationContribution);
+    bind(FrontEndRoutesProvider).toSelf().inSingletonScope();
+
+    bind(HeroesPageContribution).toSelf();
+    bind(RoutesApplicationContribution).toService(HeroesPageContribution);
 });

@@ -9,22 +9,24 @@ import Routes from './routes';
 import { ApplicationState } from './store';
 import LayoutContainer from './containers/LayoutContainer';
 import * as themes from './styles/theme';
+import { RoutesProvider } from '../common/routes/routes';
 
 // Any additional component props go here.
 interface MainProps {
   store: Store<ApplicationState>
-  history: History
+  history: History,
+  routeProvider: RoutesProvider;
 }
 
 // Create an intersection type of the component props and our Redux props.
-const Main: React.FC<MainProps> = ({ store, history }) =>
+const Main: React.FC<MainProps> = ({ store, history, routeProvider }) =>
   (
     <Provider store={store}>
       <ConnectedRouter history={history}>
         <LayoutContainer>
           {({ theme }) => (
             <ThemeProvider theme={themes[theme]}>
-              <Routes />
+              <Routes routeProvider={routeProvider} />
             </ThemeProvider>
           )}
         </LayoutContainer>

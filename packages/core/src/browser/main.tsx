@@ -7,10 +7,10 @@ import { RegionsClient } from './services/region-service';
 import Main from './start';
 import 'typeface-ibm-plex-sans';
 import configureStore from './store/configureStore';
+import { RoutesProvider } from '../common/routes/routes';
 
 export const renderStart = (
-        target: HTMLElement, title: string, message: string,
-        regionsService: RegionsService, regionsServiceClient: RegionsClient,
+        target: HTMLElement, routeProvider: RoutesProvider,
         disposables: DisposableCollection
     ) => {
         // We use hash history because this example is going to be hosted statically.
@@ -20,7 +20,7 @@ export const renderStart = (
         const initialState = window['INITIAL_REDUX_STATE'] ? window['INITIAL_REDUX_STATE'] : {} as any;
         const store = configureStore(history, initialState);
 
-        ReactDOM.render(<Main store={store} history={history} />, target);
+        ReactDOM.render(<Main store={store} history={history} routeProvider={routeProvider} />, target);
         // ReactDOM.render(
         //     <Start title={title} message={message} regionsService={regionsService}
         //     regionsServiceClient={regionsServiceClient} disposables={disposables}></Start>,

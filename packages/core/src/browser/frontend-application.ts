@@ -1,8 +1,10 @@
 import { inject, injectable, interfaces, named } from 'inversify';
 import { ContributionProvider, DisposableCollection, MaybePromise } from '../common';
+import { RoutesProvider } from '../common/routes/routes';
 import { regionsPath, RegionsService } from '../common/services/regions';
 import { renderStart } from './main';
 import { WebSocketConnectionProvider } from './messaging';
+import { FrontEndRoutesProvider } from './routes-provider';
 import { RegionsClient } from './services/region-service';
 
 /**
@@ -77,21 +79,22 @@ export class FrontendApplication {
         @inject(ContributionProvider) @named(FrontendApplicationContribution)
         protected readonly contributions: ContributionProvider<FrontendApplicationContribution>,
         @inject(WebSocketConnectionProvider) protected connectionProvider: WebSocketConnectionProvider,
+        @inject(FrontEndRoutesProvider) protected readonly routesProvider: RoutesProvider,
         @inject(RegionsClient) protected regionsClient: RegionsClient
     ) {
 
     }
     public async start(): Promise<void> {
         await this.startContributions();
-        const greetingsService = this.connectionProvider.createProxy<RegionsService>(regionsPath, this.regionsClient);
+        this.connectionProvider.createProxy<RegionsService>(regionsPath, this.regionsClient);
 
         const body = await this.getHost();
-        const ctEntry = document.createElement('div');
+        const ctEntry = document.createElement('div'); // TODO: only create the element if one does not exist (set and id??)
         ctEntry.setAttribute('id', 'loop');
         ctEntry.classList.add('loop-out-box');
         body.appendChild(ctEntry);
 
-        renderStart(ctEntry, 'Loop Backend', 'Welcome to Loop Backend', greetingsService, this.regionsClient, this.disposables);
+        renderStart(ctEntry, this.routesProvider, this.disposables);
     }
 
     private getHost(): Promise<HTMLElement> {

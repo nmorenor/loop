@@ -1,5 +1,7 @@
 // This file holds our state type, as well as any other types related to this Redux store.
 
+import { ApplicationState } from '../index';
+
 // Response object for GET /teams
 // https://docs.opendota.com/#tag/teams%2Fpaths%2F~1teams%2Fget
 export interface Team {
@@ -48,4 +50,8 @@ export interface TeamsState {
   readonly data: Team[]
   readonly selected?: TeamSelectedPayload
   readonly errors?: string
+}
+
+export interface TeamsApplicationState extends ApplicationState {
+  teams: TeamsState;
 }

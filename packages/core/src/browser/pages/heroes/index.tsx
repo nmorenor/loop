@@ -10,9 +10,9 @@ import LoadingOverlay from '../../components/data/LoadingOverlay';
 import LoadingOverlayInner from '../../components/data/LoadingOverlayInner';
 import LoadingSpinner from '../../components/data/LoadingSpinner';
 
-import { ApplicationState } from '../../store';
-import { Hero } from '../../store/heroes/types';
+import { Hero, HeroesApplicationState } from '../../store/heroes/types';
 import { fetchRequest } from '../../store/heroes/actions';
+import { IServiceProvider } from '../../../common/services/service-provider';
 
 // Separate state props + dispatch props to their own interfaces.
 interface PropsFromState {
@@ -21,13 +21,17 @@ interface PropsFromState {
   errors?: string;
 }
 
+interface PropsFromLoop {
+  serviceProvider: IServiceProvider;
+}
+
 // We can use `typeof` here to map our dispatch types to the props, like so.
 interface PropsFromDispatch {
   fetchRequest: typeof fetchRequest;
 }
 
 // Combine both state + dispatch props - as well as any props we want to pass - in a union type.
-type AllProps = PropsFromState & PropsFromDispatch;
+type AllProps = PropsFromState & PropsFromDispatch & PropsFromLoop;
 
 const API_ENDPOINT = 'https://api.opendota.com';
 
@@ -93,7 +97,7 @@ class HeroesIndexPage extends React.Component<AllProps> {
 // It's usually good practice to only include one context at a time in a connected component.
 // Although if necessary, you can always include multiple contexts. Just make sure to
 // separate them from each other to prevent prop conflicts.
-const mapStateToProps = ({ heroes }: ApplicationState) => ({
+const mapStateToProps = ({ heroes }: HeroesApplicationState) => ({
   loading: heroes.loading,
   errors: heroes.errors,
   data: heroes.data

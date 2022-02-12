@@ -55,8 +55,8 @@ function* watchSelectTeam() {
 }
 
 // We can also use `fork()` here to split our saga into multiple watchers.
-function* heroesSaga(): Generator<AllEffect<ForkEffect<void>>, void, any> {
+function* teamsSaga(): Generator<AllEffect<ForkEffect<void>>, void, any> {
   yield all([fork(watchFetchRequest), fork(watchSelectTeam)]);
 }
 
-export default heroesSaga;
+export default teamsSaga;

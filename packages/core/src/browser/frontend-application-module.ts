@@ -12,6 +12,11 @@ import { EnvVariable, envVariablesPath, EnvVariablesServer } from '../common/env
 import { RoutesApplicationContribution } from '../common/routes/routes';
 import { FrontEndRoutesProvider } from './routes-provider';
 import { HeroesPageContribution } from './pages/heroes/contribution';
+import { FrontEndServiceProvider } from './frontend-service-provider';
+import { ReducerApplicationContribution, SagasApplicationContribution } from '../common/services/store-contributor';
+import { HeroesReducerContribution, HeroesSagasApplicationContribution } from './store/heroes/store-contribution';
+import { TeamsReducerContribution, TeamsSagasApplicationContribution } from './store/teams/store-contribution';
+import { TeamsPageContribution } from './pages/teams/contribution';
 
 export function bindMessageService(bind: interfaces.Bind): interfaces.BindingWhenOnSyntax<MessageService> {
     bind(MessageClient).toSelf().inSingletonScope();
@@ -55,6 +60,26 @@ export const frontendApplicationModule = new ContainerModule(bind => {
     bindContributionProvider(bind, RoutesApplicationContribution);
     bind(FrontEndRoutesProvider).toSelf().inSingletonScope();
 
+    bind(FrontEndServiceProvider).toSelf().inSingletonScope().onActivation(({container}, serviceProvider) => {
+        serviceProvider.setContainer(container);
+        return serviceProvider;
+    });
+
     bind(HeroesPageContribution).toSelf();
+    bind(TeamsPageContribution).toSelf();
     bind(RoutesApplicationContribution).toService(HeroesPageContribution);
+    bind(RoutesApplicationContribution).toService(TeamsPageContribution);
+
+    bindContributionProvider(bind, ReducerApplicationContribution);
+    bindContributionProvider(bind, SagasApplicationContribution);
+
+    bind(HeroesReducerContribution).toSelf();
+    bind(TeamsReducerContribution).toSelf();
+    bind(ReducerApplicationContribution).toService(HeroesReducerContribution);
+    bind(ReducerApplicationContribution).toService(TeamsReducerContribution);
+
+    bind(TeamsSagasApplicationContribution).toSelf();
+    bind(HeroesSagasApplicationContribution).toSelf();
+    bind(SagasApplicationContribution).toService(TeamsSagasApplicationContribution);
+    bind(SagasApplicationContribution).toService(HeroesSagasApplicationContribution);
 });

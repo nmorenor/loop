@@ -1,13 +1,13 @@
 import { injectable } from 'inversify';
 import { RouteContribution, RoutesApplicationContribution } from '../../../common/routes/routes';
-import HeroesPage from './index';
+import TeamsIndexPage from './index';
 
 @injectable()
-export class HeroesPageContribution implements RoutesApplicationContribution {
+export class TeamsPageContribution implements RoutesApplicationContribution {
     getRoute(): RouteContribution {
         return {
-            path: '/heroes',
-            component: HeroesPage,
+            path: '/teams',
+            component: TeamsIndexPage,
             name: 'Heroes',
             mainMenu: true
         };

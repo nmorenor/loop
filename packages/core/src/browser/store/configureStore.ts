@@ -11,8 +11,10 @@ import { History } from 'history';
 
 // Import the state interface and our combined reducers/sagas.
 import { ApplicationState, createRootReducer, rootSaga } from './index';
+import { IServiceProvider } from '../../common/services/service-provider';
+import { AppState } from '../../common/services/store-contributor';
 
-export default function configureStore(history: History, initialState: ApplicationState): Store<ApplicationState> {
+export default function configureStore(history: History, serviceProvider: IServiceProvider, initialState: AppState): Store<ApplicationState> {
   // create the composing function for our middlewares
   const composeEnhancers = composeWithDevTools({});
   // create the redux-saga middleware
@@ -21,12 +23,12 @@ export default function configureStore(history: History, initialState: Applicati
   // We'll create our store with the combined reducers/sagas, and the initial Redux state that
   // we'll be passing from our entry point.
   const store = createStore(
-    createRootReducer(history),
+    createRootReducer(history, serviceProvider),
     initialState,
     composeEnhancers(applyMiddleware(routerMiddleware(history), sagaMiddleware))
   );
 
   // Don't forget to run the root saga, and return the store object.
-  sagaMiddleware.run(rootSaga);
+  sagaMiddleware.run(() => rootSaga(serviceProvider));
   return store;
 }

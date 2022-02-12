@@ -2,6 +2,8 @@ import { inject, injectable, interfaces, named } from 'inversify';
 import { ContributionProvider, DisposableCollection, MaybePromise } from '../common';
 import { RoutesProvider } from '../common/routes/routes';
 import { regionsPath, RegionsService } from '../common/services/regions';
+import { IServiceProvider } from '../common/services/service-provider';
+import { FrontEndServiceProvider } from './frontend-service-provider';
 import { renderStart } from './main';
 import { WebSocketConnectionProvider } from './messaging';
 import { FrontEndRoutesProvider } from './routes-provider';
@@ -80,6 +82,7 @@ export class FrontendApplication {
         protected readonly contributions: ContributionProvider<FrontendApplicationContribution>,
         @inject(WebSocketConnectionProvider) protected connectionProvider: WebSocketConnectionProvider,
         @inject(FrontEndRoutesProvider) protected readonly routesProvider: RoutesProvider,
+        @inject(FrontEndServiceProvider) protected readonly serviceProvider: IServiceProvider,
         @inject(RegionsClient) protected regionsClient: RegionsClient
     ) {
 
@@ -94,7 +97,7 @@ export class FrontendApplication {
         ctEntry.classList.add('loop-out-box');
         body.appendChild(ctEntry);
 
-        renderStart(ctEntry, this.routesProvider, this.disposables);
+        renderStart(ctEntry, this.routesProvider, this.serviceProvider, this.disposables);
     }
 
     private getHost(): Promise<HTMLElement> {

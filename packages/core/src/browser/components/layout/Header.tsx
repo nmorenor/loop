@@ -3,9 +3,11 @@ import { NavLink } from 'react-router-dom';
 import styled from '../../utils/styled';
 import LayoutContainer from '../../containers/LayoutContainer';
 import Container from './Container';
+import { RoutesProvider } from '../../../common/routes/routes';
 
 interface HeaderProps {
-  title: string
+  title: string,
+  routesProvider: RoutesProvider;
 }
 
 const Wrapper = styled('header')`
@@ -80,7 +82,7 @@ const ThemeSwitcherButton = styled('button')`
   }
 `;
 
-const Header: React.FC<HeaderProps> = ({ title }) => (
+const Header: React.FC<HeaderProps> = ({ title, routesProvider }) => (
   <Wrapper>
     <HeaderInner>
       <HeaderLeft>
@@ -90,12 +92,14 @@ const Header: React.FC<HeaderProps> = ({ title }) => (
         <HeaderNavLink exact to='/' activeClassName='is-active'>
           Home
         </HeaderNavLink>
-        <HeaderNavLink to='/heroes' activeClassName='is-active'>
-          Heroes
-        </HeaderNavLink>
-        <HeaderNavLink to='/teams' activeClassName='is-active'>
-          Teams
-        </HeaderNavLink>
+        { routesProvider.getRoutes().filter(next => next.mainMenu).map((next, index) => {
+          const link = (
+            <HeaderNavLink key={'main-menu-' + index + '-' + next.name} to={next.path} activeClassName='is-active'>
+              {next.name}
+            </HeaderNavLink>
+          );
+          return link;
+        }) }
       </HeaderNav>
       <HeaderRight>
         <LayoutContainer>

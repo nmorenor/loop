@@ -4,6 +4,8 @@ export const RoutesApplicationContribution = Symbol('RoutesApplicationContributi
 export interface RouteContribution {
     path: string;
     component: ConnectedComponent<any, any>;
+    name: string;
+    mainMenu: boolean;
 }
 export interface RoutesApplicationContribution {
     getRoute(): RouteContribution;

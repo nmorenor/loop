@@ -5,7 +5,7 @@ import { RouteComponentProps, Route, Switch } from 'react-router-dom';
 import TeamsIndexPage from './teams/index';
 import ShowTeamsPage from './teams/show';
 
-import { ApplicationState } from '../store';
+import { TeamsApplicationState } from '../store/teams/types';
 
 // Separate state props + dispatch props to their own interfaces.
 interface PropsFromState {
@@ -27,7 +27,7 @@ const TeamsPage: React.FC<AllProps> = ({ match }) =>
 // It's usually good practice to only include one context at a time in a connected component.
 // Although if necessary, you can always include multiple contexts. Just make sure to
 // separate them from each other to prevent prop conflicts.
-const mapStateToProps = ({ teams }: ApplicationState) => ({
+const mapStateToProps = ({ teams }: TeamsApplicationState) => ({
   loading: teams.loading,
   errors: teams.errors
 });

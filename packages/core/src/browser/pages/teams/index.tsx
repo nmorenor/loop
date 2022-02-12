@@ -11,9 +11,9 @@ import LoadingOverlay from '../../components/data/LoadingOverlay';
 import LoadingOverlayInner from '../../components/data/LoadingOverlayInner';
 import LoadingSpinner from '../../components/data/LoadingSpinner';
 
-import { ApplicationState } from '../../store';
-import { Team } from '../../store/teams/types';
+import { Team, TeamsApplicationState } from '../../store/teams/types';
 import { fetchRequest } from '../../store/teams/actions';
+import { IServiceProvider } from '../../../common/services/service-provider';
 
 // Separate state props + dispatch props to their own interfaces.
 interface PropsFromState {
@@ -22,13 +22,17 @@ interface PropsFromState {
   errors?: string;
 }
 
+interface PropsFromLoop {
+  serviceProvider: IServiceProvider;
+}
+
 // We can use `typeof` here to map our dispatch types to the props, like so.
 interface PropsFromDispatch {
   fetchTeams: typeof fetchRequest;
 }
 
 // Combine both state + dispatch props - as well as any props we want to pass - in a union type.
-type AllProps = PropsFromState & PropsFromDispatch;
+type AllProps = PropsFromState & PropsFromDispatch & PropsFromLoop;
 
 class TeamsIndexPage extends React.Component<AllProps> {
   public componentDidMount() {
@@ -97,7 +101,7 @@ class TeamsIndexPage extends React.Component<AllProps> {
 // It's usually good practice to only include one context at a time in a connected component.
 // Although if necessary, you can always include multiple contexts. Just make sure to
 // separate them from each other to prevent prop conflicts.
-const mapStateToProps = ({ teams }: ApplicationState) => ({
+const mapStateToProps = ({ teams }: TeamsApplicationState) => ({
   loading: teams.loading,
   errors: teams.errors,
   data: teams.data

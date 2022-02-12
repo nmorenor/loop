@@ -1,5 +1,7 @@
 // This file holds our state type, as well as any other types related to this Redux store.
 
+import { ApplicationState } from '../index';
+
 // Response object for GET /heroes
 // https://docs.opendota.com/#tag/heroes%2Fpaths%2F~1heroes%2Fget
 export interface Hero extends ApiResponse {
@@ -58,4 +60,8 @@ export interface HeroesState {
   readonly loading: boolean
   readonly data: Hero[]
   readonly errors?: string
+}
+
+export interface HeroesApplicationState extends ApplicationState {
+  heroes: HeroesState;
 }

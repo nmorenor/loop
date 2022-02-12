@@ -16,8 +16,7 @@ import { HeroDetails, HeroDetailsColumn, HeroDetailsRow, HeroDetailsAttrName } f
 import Page from '../../components/layout/Page';
 import Container from '../../components/layout/Container';
 
-import { ApplicationState } from '../../store';
-import { Hero } from '../../store/heroes/types';
+import { Hero, HeroesApplicationState } from '../../store/heroes/types';
 import { fetchRequest } from '../../store/heroes/actions';
 import styled from '../../utils/styled';
 import LoadingOverlay from '../../components/data/LoadingOverlay';
@@ -174,7 +173,7 @@ class ShowHeroesPage extends React.Component<AllProps, State> {
 // It's usually good practice to only include one context at a time in a connected component.
 // Although if necessary, you can always include multiple contexts. Just make sure to
 // separate them from each other to prevent prop conflicts.
-const mapStateToProps = ({ heroes }: ApplicationState) => ({
+const mapStateToProps = ({ heroes }: HeroesApplicationState) => ({
   loading: heroes.loading,
   errors: heroes.errors,
   data: heroes.data

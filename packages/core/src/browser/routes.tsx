@@ -5,10 +5,10 @@ import { Global } from '@emotion/core';
 import Root from './components/layout/Root';
 import Header from './components/layout/Header';
 import IndexPage from './pages/index';
-import TeamsPage from './pages/teams';
 import normalize from './styles/normalize';
 import globals from './styles/globals';
 import { RoutesProvider } from '../common/routes/routes';
+import { IServiceProvider } from '../common/services/service-provider';
 
 // If your app is big + you have routes with a lot of components, you should consider
 // code-splitting your routes! If you bundle stuff up with Webpack, I recommend `react-loadable`.
@@ -21,18 +21,19 @@ import { RoutesProvider } from '../common/routes/routes';
 
 export interface RoutesProps {
   routeProvider: RoutesProvider;
+  serviceProvider: IServiceProvider;
 }
 
-const Routes: React.FC<RoutesProps> = ({ routeProvider }) => (
+const Routes: React.FC<RoutesProps> = ({ routeProvider, serviceProvider }) => (
   <Root className='rootApp'>
     <Global styles={normalize} />
     <Global styles={globals} />
-    <Header title='Example App' />
+    <Header title='Loop Example' routesProvider={routeProvider} />
     <Switch>
       <Route exact path='/' component={IndexPage} />
-      { routeProvider.getRoutes().map((next, index) => <Route key={'main-route-' + index} path={next.path} component={next.component} />) }
-      {/* <Route path='/heroes' component={HeroesPage} /> */}
-      <Route path='/teams' component={TeamsPage} />
+      { routeProvider.getRoutes().map(
+        (next, index) => <Route key={'main-route-' + index} path={next.path}
+        render={props => <next.component {...props} serviceProvider={serviceProvider}></next.component>}/>)}
       <Route component={() => <div>Not Found</div>} />
     </Switch>
   </Root>

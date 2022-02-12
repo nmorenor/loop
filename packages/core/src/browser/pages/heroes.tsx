@@ -5,8 +5,7 @@ import { RouteComponentProps, Route, Switch } from 'react-router-dom';
 import HeroesIndexPage from './heroes/index';
 import ShowHeroesPage from './heroes/show';
 
-import { ApplicationState } from '../store';
-import { Hero } from '../store/heroes/types';
+import { Hero, HeroesApplicationState } from '../store/heroes/types';
 
 // Separate state props + dispatch props to their own interfaces.
 interface PropsFromState {
@@ -29,7 +28,7 @@ const HeroesPage: React.FC<AllProps> = ({ match }) =>
 // It's usually good practice to only include one context at a time in a connected component.
 // Although if necessary, you can always include multiple contexts. Just make sure to
 // separate them from each other to prevent prop conflicts.
-const mapStateToProps = ({ heroes }: ApplicationState) => ({
+const mapStateToProps = ({ heroes }: HeroesApplicationState) => ({
   loading: heroes.loading,
   errors: heroes.errors,
   data: heroes.data

@@ -1,6 +1,6 @@
 // This file holds our state type, as well as any other types related to this Redux store.
 
-import { ApplicationState } from '../index';
+import { ApplicationState } from '@loop/core/lib/browser/store/index';
 
 // Response object for GET /heroes
 // https://docs.opendota.com/#tag/heroes%2Fpaths%2F~1heroes%2Fget

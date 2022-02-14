@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-import styled from '../../utils/styled';
+import styled from '@loop/core/lib/browser/utils/styled';
 
-import Page from '../../components/layout/Page';
-import Container from '../../components/layout/Container';
-import LoadingOverlay from '../../components/data/LoadingOverlay';
-import LoadingOverlayInner from '../../components/data/LoadingOverlayInner';
-import LoadingSpinner from '../../components/data/LoadingSpinner';
+import Page from '@loop/core/lib/browser/components/layout/Page';
+import Container from '@loop/core/lib/browser/components/layout/Container';
+import LoadingOverlay from '@loop/core/lib/browser/components/data/LoadingOverlay';
+import LoadingOverlayInner from '@loop/core/lib/browser/components/data/LoadingOverlayInner';
+import LoadingSpinner from '@loop/core/lib/browser/components/data/LoadingSpinner';
 
-import { TeamsApplicationState, TeamSelectedPayload } from '../../store/teams/types';
-import { selectTeam as selectTeamAction, clearSelected as clearSelectedAction } from '../../store/teams/actions';
-import DataTable from '../../components/layout/DataTable';
+import { TeamsApplicationState, TeamSelectedPayload } from '../../common/store/types';
+import { selectTeam as selectTeamAction, clearSelected as clearSelectedAction } from '../../common/store/actions';
+import DataTable from '@loop/core/lib/browser/components/layout/DataTable';
 import {
   TeamInfobox,
   TeamInfoboxBlurBackground,
@@ -19,8 +19,8 @@ import {
   TeamLogo,
   TeamInfoboxHeading,
   TeamName
-} from '../../components/teams/TeamInfobox';
-import { TeamStats, TeamStatsInner, StatItem, StatHeading, StatNumber } from '../../components/teams/TeamStats';
+} from '@loop/core/lib/browser/components/teams/TeamInfobox';
+import { TeamStats, TeamStatsInner, StatItem, StatHeading, StatNumber } from '@loop/core/lib/browser/components/teams/TeamStats';
 
 // Separate state props + dispatch props to their own interfaces.
 interface PropsFromState {

@@ -1,5 +1,5 @@
 import { transparentize } from 'polished';
-import styled from '../../utils/styled';
+import styled from '@loop/core/lib/browser/utils/styled';
 
 export const HeroDetailsAttrName = styled('span')`
   color: ${props => transparentize(0.25, props.theme.colors.body)};

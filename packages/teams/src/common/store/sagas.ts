@@ -1,7 +1,7 @@
 import { all, AllEffect, call, fork, ForkEffect, put, takeEvery, takeLatest } from 'redux-saga/effects';
 import { Team, TeamsActionTypes, TeamSelectedPayload } from './types';
 import { fetchError, fetchSuccess, selectTeam, teamSelected } from './actions';
-import { callApi, RespError } from '../../utils/api';
+import { callApi, RespError } from '@loop/core/lib/browser/utils/api';
 
 const API_ENDPOINT = 'https://api.opendota.com';
 

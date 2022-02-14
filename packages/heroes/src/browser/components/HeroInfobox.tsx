@@ -1,16 +1,16 @@
-import { darken, transparentize } from 'polished';
+import { darken } from 'polished';
 
-import styled from '../../utils/styled';
+import styled from '@loop/core/lib/browser/utils/styled';
 
-export const TeamInfobox = styled('div')`
+export const HeroInfobox = styled('div')`
   position: relative;
-  background: ${props => transparentize(0.1, props.theme.colors.black)};
+  background: rgba(0, 0, 0, 0.9);
   overflow: hidden;
   border-radius: 8px;
   color: ${props => darken(0.25, props.theme.colors.white)};
 `;
 
-export const TeamInfoboxBlurBackground = styled('img')`
+export const HeroInfoboxBlurBackground = styled('img')`
   position: absolute;
   top: -12.5%;
   left: -12.5%;
@@ -23,7 +23,7 @@ export const TeamInfoboxBlurBackground = styled('img')`
   z-index: 1;
 `;
 
-export const TeamInfoboxInner = styled('div')`
+export const HeroInfoboxInner = styled('div')`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -37,15 +37,13 @@ export const TeamInfoboxInner = styled('div')`
   }
 `;
 
-export const TeamLogo = styled('img')`
+export const HeroInfoboxImage = styled('img')`
   display: block;
   flex-shrink: 0;
   width: 180px;
   height: 128px;
-  padding: 1rem;
-  background: ${props => transparentize(0.1, props.theme.colors.black)};
   box-shadow: rgba(0, 0, 0, 0.3) 0px 12px 32px;
-  object-fit: contain;
+  object-fit: cover;
   border-radius: 16px;
   border-width: 1px;
   border-style: solid;
@@ -53,7 +51,7 @@ export const TeamLogo = styled('img')`
   border-image: initial;
 `;
 
-export const TeamInfoboxHeading = styled('div')`
+export const HeroInfoboxHeading = styled('div')`
   flex: 1 1 100%;
   margin: 1.5rem 0 0;
   text-align: center;
@@ -64,8 +62,20 @@ export const TeamInfoboxHeading = styled('div')`
   }
 `;
 
-export const TeamName = styled('h1')`
+export const HeroName = styled('h1')`
   margin: 0;
   color: ${props => props.theme.colors.white};
   font-weight: 500;
+`;
+
+export const HeroRoles = styled('p')`
+  margin: 0.5rem 0 0;
+  color: ${props => props.theme.colors.white};
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+
+  & span {
+    color: ${props => darken(0.25, props.theme.colors.white)};
+  }
 `;

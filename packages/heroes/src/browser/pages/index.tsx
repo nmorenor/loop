@@ -2,17 +2,17 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import styled from '../../utils/styled';
-import Page from '../../components/layout/Page';
-import Container from '../../components/layout/Container';
-import DataTable from '../../components/layout/DataTable';
-import LoadingOverlay from '../../components/data/LoadingOverlay';
-import LoadingOverlayInner from '../../components/data/LoadingOverlayInner';
-import LoadingSpinner from '../../components/data/LoadingSpinner';
+import styled from '@loop/core/lib/browser/utils/styled';
+import Page from '@loop/core/lib/browser/components/layout/Page';
+import Container from '@loop/core/lib/browser/components/layout/Container';
+import DataTable from '@loop/core/lib/browser/components/layout/DataTable';
+import LoadingOverlay from '@loop/core/lib/browser/components/data/LoadingOverlay';
+import LoadingOverlayInner from '@loop/core/lib/browser/components/data/LoadingOverlayInner';
+import LoadingSpinner from '@loop/core/lib/browser/components/data/LoadingSpinner';
 
-import { Hero, HeroesApplicationState } from '../../store/heroes/types';
-import { fetchRequest } from '../../store/heroes/actions';
-import { IServiceProvider } from '../../../common/services/service-provider';
+import { Hero, HeroesApplicationState } from '../../common/store/types';
+import { fetchRequest } from '../../common/store/actions';
+import { IServiceProvider } from '@loop/core/lib/common/services/service-provider';
 
 // Separate state props + dispatch props to their own interfaces.
 interface PropsFromState {

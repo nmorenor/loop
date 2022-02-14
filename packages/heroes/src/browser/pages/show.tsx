@@ -10,18 +10,18 @@ import {
   HeroInfoboxBlurBackground,
   HeroName,
   HeroRoles
-} from '../../components/heroes/HeroInfobox';
-import { HeroStats, HeroStatsInner, StatAttribute, Bullet } from '../../components/heroes/HeroStats';
-import { HeroDetails, HeroDetailsColumn, HeroDetailsRow, HeroDetailsAttrName } from '../../components/heroes/HeroDetails';
-import Page from '../../components/layout/Page';
-import Container from '../../components/layout/Container';
+} from '../components/HeroInfobox';
+import { HeroStats, HeroStatsInner, StatAttribute, Bullet } from '../components/HeroStats';
+import { HeroDetails, HeroDetailsColumn, HeroDetailsRow, HeroDetailsAttrName } from '../components/HeroDetails';
+import Page from '@loop/core/lib/browser/components/layout/Page';
+import Container from '@loop/core/lib/browser/components/layout/Container';
 
-import { Hero, HeroesApplicationState } from '../../store/heroes/types';
-import { fetchRequest } from '../../store/heroes/actions';
-import styled from '../../utils/styled';
-import LoadingOverlay from '../../components/data/LoadingOverlay';
-import LoadingOverlayInner from '../../components/data/LoadingOverlayInner';
-import LoadingSpinner from '../../components/data/LoadingSpinner';
+import { Hero, HeroesApplicationState } from '../../common/store/types';
+import { fetchRequest } from '../../common/store/actions';
+import styled from '@loop/core/lib/browser/utils/styled';
+import LoadingOverlay from '@loop/core/lib/browser/components/data/LoadingOverlay';
+import LoadingOverlayInner from '@loop/core/lib/browser/components/data/LoadingOverlayInner';
+import LoadingSpinner from '@loop/core/lib/browser/components/data/LoadingSpinner';
 
 // Separate state props + dispatch props to their own interfaces.
 interface PropsFromState {

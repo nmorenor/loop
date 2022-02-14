@@ -12,7 +12,9 @@
   },
   "dependencies": {
     "@loop/core": "1.0.0",
-    "@loop/data-models": "1.0.0"
+    "@loop/data-models": "1.0.0",
+    "@loop/heroes": "1.0.0",
+    "@loop/teams": "1.0.0"
   },
   "scripts": {
     "prepare": "yarn run clean && yarn build",

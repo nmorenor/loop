@@ -1,7 +1,7 @@
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import { Hero, HeroesActionTypes } from './types';
 import { fetchError, fetchSuccess } from './actions';
-import { callApi, RespError } from '../../utils/api';
+import { callApi, RespError } from '@loop/core/lib/browser/utils/api';
 
 const API_ENDPOINT = 'https://api.opendota.com';
 

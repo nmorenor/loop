@@ -2,10 +2,10 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps, Route, Switch } from 'react-router-dom';
 
-import TeamsIndexPage from './teams/index';
-import ShowTeamsPage from './teams/show';
+import TeamsIndexPage from './index';
+import ShowTeamsPage from './show';
 
-import { TeamsApplicationState } from '../store/teams/types';
+import { TeamsApplicationState } from '../../common/store/types';
 
 // Separate state props + dispatch props to their own interfaces.
 interface PropsFromState {

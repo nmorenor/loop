@@ -2,10 +2,10 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps, Route, Switch } from 'react-router-dom';
 
-import HeroesIndexPage from './heroes/index';
-import ShowHeroesPage from './heroes/show';
+import HeroesIndexPage from './index';
+import ShowHeroesPage from './show';
 
-import { Hero, HeroesApplicationState } from '../store/heroes/types';
+import { Hero, HeroesApplicationState } from '../../common/store/types';
 
 // Separate state props + dispatch props to their own interfaces.
 interface PropsFromState {

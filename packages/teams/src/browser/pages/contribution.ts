@@ -1,5 +1,5 @@
 import { injectable } from 'inversify';
-import { RouteContribution, RoutesApplicationContribution } from '../../../common/routes/routes';
+import { RouteContribution, RoutesApplicationContribution } from '@loop/core/lib/common/routes/routes';
 import TeamsIndexPage from './index';
 
 @injectable()
@@ -8,7 +8,7 @@ export class TeamsPageContribution implements RoutesApplicationContribution {
         return {
             path: '/teams',
             component: TeamsIndexPage,
-            name: 'Heroes',
+            name: 'Teams',
             mainMenu: true
         };
     }

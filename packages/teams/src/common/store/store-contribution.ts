@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
 import { AllEffect, ForkEffect } from 'redux-saga/effects';
-import { ReducerApplicationContribution, ReducerEntry, SagasApplicationContribution } from '../../../common/services/store-contributor';
+import { ReducerApplicationContribution, ReducerEntry, SagasApplicationContribution } from '@loop/core/lib/common/services/store-contributor';
 import { teamsReducer } from './reducer';
 import teamsSaga from './sagas';
 

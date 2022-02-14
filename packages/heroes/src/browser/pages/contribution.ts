@@ -1,5 +1,5 @@
 import { injectable } from 'inversify';
-import { RouteContribution, RoutesApplicationContribution } from '../../../common/routes/routes';
+import { RouteContribution, RoutesApplicationContribution } from '@loop/core/lib/common/routes/routes';
 import HeroesPage from './index';
 
 @injectable()

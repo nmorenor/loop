@@ -1,4 +1,4 @@
-import styled from '../../utils/styled';
+import styled from '@loop/core/lib/browser/utils/styled';
 
 export const HeroStats = styled('div')`
   display: block;

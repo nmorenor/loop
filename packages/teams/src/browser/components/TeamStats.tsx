@@ -1,4 +1,4 @@
-import styled from '../../utils/styled';
+import styled from '@loop/core/lib/browser/utils/styled';
 
 export const TeamStats = styled('div')`
   display: block;

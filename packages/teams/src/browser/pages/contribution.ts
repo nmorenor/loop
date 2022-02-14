@@ -9,7 +9,8 @@ export class TeamsPageContribution implements RoutesApplicationContribution {
             path: '/teams',
             component: TeamsIndexPage,
             name: 'Teams',
-            mainMenu: true
+            mainMenu: true,
+            exact: false
         };
     }
 }

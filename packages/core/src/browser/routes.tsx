@@ -4,7 +4,6 @@ import { Global } from '@emotion/core';
 
 import Root from './components/layout/Root';
 import Header from './components/layout/Header';
-import IndexPage from './pages/index';
 import normalize from './styles/normalize';
 import globals from './styles/globals';
 import { RoutesProvider } from '../common/routes/routes';
@@ -30,10 +29,15 @@ const Routes: React.FC<RoutesProps> = ({ routeProvider, serviceProvider }) => (
     <Global styles={globals} />
     <Header title='Loop Example' routesProvider={routeProvider} />
     <Switch>
-      <Route exact path='/' component={IndexPage} />
-      { routeProvider.getRoutes().map(
-        (next, index) => <Route key={'main-route-' + index} path={next.path}
-        render={props => <next.component {...props} serviceProvider={serviceProvider}></next.component>}/>)}
+      { routeProvider.getRoutes().map((next, index) => {
+        if (next.exact) {
+          return <Route key={'main-route-' + index} exact path={next.path}
+            render={props => <next.component {...props} serviceProvider={serviceProvider}></next.component>}/>;
+        } else {
+          return <Route key={'main-route-' + index} path={next.path}
+            render={props => <next.component {...props} serviceProvider={serviceProvider}></next.component>}/>;
+        }
+      })}
       <Route component={() => <div>Not Found</div>} />
     </Switch>
   </Root>

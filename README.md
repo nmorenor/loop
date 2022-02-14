@@ -14,4 +14,4 @@ I've been using VSCode to work on this project if you do the same just run the e
 
 This is the example Screen Shot from the running example.
 
-![Loop](https://nmorenor.com/loop-ss.png)
+![Loop](https://nmorenor.com/loop.png)

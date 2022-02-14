@@ -6,10 +6,16 @@
     "@loop/core": "1.0.0",
     "sequelize": "^6.6.5",
     "jsonwebtoken": "^8.5.1",
-    "mysql2": "^2.2.5"
+    "mysql2": "^2.2.5",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-redux": "^7.1.1",
+    "react-router": "5.2.0",
+    "react-router-dom": "5.2.0"
   },
   "loopExtensions": [
     {
+      "frontend": "lib/browser/data-models-module",
       "backend": "lib/node/data-models-module"
     }
   ],

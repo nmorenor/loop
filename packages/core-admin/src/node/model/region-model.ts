@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
-import { RegionAttributes } from '@loop/core/src/common/services/regions';
 import { DataTypes, Model, Sequelize, Optional } from 'sequelize';
+import { RegionAttributes } from '../../common/services/regions';
 import { SequelizeModelContribution } from '../data-models-manager';
 
 interface RegionCreationAttributes extends Optional<RegionAttributes, 'code'> {}

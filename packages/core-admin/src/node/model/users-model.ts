@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
-import { GroupAttributes, UserAttributes } from '@loop/core/src/common/services/users';
 import { DataTypes, Model, Sequelize, Optional, Association } from 'sequelize';
+import { GroupAttributes, UserAttributes } from '../../common/services/users';
 import { SequelizeModelContribution } from '../data-models-manager';
 
 interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}

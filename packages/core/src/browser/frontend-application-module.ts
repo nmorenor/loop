@@ -5,7 +5,6 @@ import { ContainerModule, interfaces } from 'inversify';
 import { DefaultFrontendApplicationContribution, FrontendApplication, FrontendApplicationContribution } from './frontend-application';
 import { MessageClient, messageServicePath } from '../common/message-service-protocol';
 import { bindContributionProvider, MessageService, MessageServiceFactory } from '../common';
-import { RegionsClient } from './services/region-service';
 import { WebSocketConnectionProvider } from './messaging';
 import { ConnectionStatusService, FrontendConnectionStatusService, PingService } from './connection-status-service';
 import { EnvVariable, envVariablesPath, EnvVariablesServer } from '../common/env-variables';
@@ -38,7 +37,6 @@ export const frontendApplicationModule = new ContainerModule(bind => {
         WebSocketConnectionProvider.createProxy(container, messageServicePath, client);
         return messages;
     });
-    bind(RegionsClient).toSelf().inSingletonScope();
 
     bind(EnvVariablesServer).toDynamicValue(ctx => {
         const connection = ctx.container.get(WebSocketConnectionProvider);

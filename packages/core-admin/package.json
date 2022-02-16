@@ -1,5 +1,5 @@
 {
-  "name": "@loop/data-models",
+  "name": "@loop/core-admin",
   "version": "1.0.0",
   "description": "",
   "dependencies": {
@@ -15,8 +15,8 @@
   },
   "loopExtensions": [
     {
-      "frontend": "lib/browser/data-models-module",
-      "backend": "lib/node/data-models-module"
+      "frontend": "lib/browser/front-end-admin-module",
+      "backend": "lib/node/back-end-admin-module"
     }
   ],
   "devDependencies": {

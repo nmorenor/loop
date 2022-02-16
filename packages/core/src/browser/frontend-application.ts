@@ -1,13 +1,11 @@
 import { inject, injectable, interfaces, named } from 'inversify';
 import { ContributionProvider, DisposableCollection, MaybePromise } from '../common';
 import { RoutesProvider } from '../common/routes/routes';
-import { regionsPath, RegionsService } from '../common/services/regions';
 import { IServiceProvider } from '../common/services/service-provider';
 import { FrontEndServiceProvider } from './frontend-service-provider';
 import { renderStart } from './main';
 import { WebSocketConnectionProvider } from './messaging';
 import { FrontEndRoutesProvider } from './routes-provider';
-import { RegionsClient } from './services/region-service';
 
 /**
  * Clients can implement to get a callback for contributing widgets to a shell on start.
@@ -82,19 +80,17 @@ export class FrontendApplication {
         protected readonly contributions: ContributionProvider<FrontendApplicationContribution>,
         @inject(WebSocketConnectionProvider) protected connectionProvider: WebSocketConnectionProvider,
         @inject(FrontEndRoutesProvider) protected readonly routesProvider: RoutesProvider,
-        @inject(FrontEndServiceProvider) protected readonly serviceProvider: IServiceProvider,
-        @inject(RegionsClient) protected regionsClient: RegionsClient
+        @inject(FrontEndServiceProvider) protected readonly serviceProvider: IServiceProvider
     ) {
 
     }
     public async start(): Promise<void> {
         await this.startContributions();
-        this.connectionProvider.createProxy<RegionsService>(regionsPath, this.regionsClient);
 
         const body = await this.getHost();
-        const ctEntry = document.createElement('div'); // TODO: only create the element if one does not exist (set and id??)
+        const ctEntry =  document.getElementById('loop') !== undefined
+            ? document.getElementById('loop')! : document.createElement('div');
         ctEntry.setAttribute('id', 'loop');
-        ctEntry.classList.add('loop-out-box');
         body.appendChild(ctEntry);
 
         renderStart(ctEntry, this.routesProvider, this.serviceProvider, this.disposables);

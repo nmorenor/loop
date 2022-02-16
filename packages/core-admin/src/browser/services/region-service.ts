@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
 import { RegionsServiceClient } from '../../common/services/regions';
-import { Emitter, Event } from '../../common';
+import { Emitter, Event } from '@loop/core/lib/common';
 
 @injectable()
 export class RegionsClient implements RegionsServiceClient {

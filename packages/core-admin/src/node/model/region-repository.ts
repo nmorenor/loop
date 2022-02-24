@@ -1,5 +1,5 @@
 import { injectable, inject } from 'inversify';
-import { RegionsServiceClient } from '@loop/core/lib/common/services/regions';
+import { RegionsServiceClient } from '../../common/services/regions';
 import { Region } from './region-model';
 
 export const RegionClientsManagerService = Symbol('RegionClientsManagerService');

@@ -1,7 +1,7 @@
 
 import { JsonRpcServer } from '@loop/core/lib/common/messaging';
 import { injectable, inject } from 'inversify';
-import { AuthService, AuthServiceClient, LoginResponse, InstallService, InstallServiceClient, SystemStateService, SystemStateClient, InstallResponse, SystemState } from '@loop/core/lib/common/services/users';
+import { AuthService, AuthServiceClient, LoginResponse, InstallService, InstallServiceClient, SystemStateService, SystemStateClient, InstallResponse, SystemState } from '../../common/services/users';
 import { UsersRepository } from '../model/users-repository';
 import { ApplicationConfigProvider } from '@loop/core/lib/node/backend-application';
 import * as jwt from 'jsonwebtoken';

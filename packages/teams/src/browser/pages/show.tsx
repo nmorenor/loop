@@ -19,8 +19,8 @@ import {
   TeamLogo,
   TeamInfoboxHeading,
   TeamName
-} from '@loop/core/lib/browser/components/teams/TeamInfobox';
-import { TeamStats, TeamStatsInner, StatItem, StatHeading, StatNumber } from '@loop/core/lib/browser/components/teams/TeamStats';
+} from '../components/TeamInfobox';
+import { TeamStats, TeamStatsInner, StatItem, StatHeading, StatNumber } from '../components/TeamStats';
 
 // Separate state props + dispatch props to their own interfaces.
 interface PropsFromState {

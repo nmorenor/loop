@@ -30,8 +30,8 @@
     "test": "echo 'skip'"
   },
   "dependencies": {
-    "@theia/application-manager": "file:../application-manager",
-    "@theia/application-package": "file:../application-package",
+    "@theia/application-manager": "4.2.0",
+    "@theia/application-package": "4.2.0",
     "yargs": "^11.1.0"
   }
 }

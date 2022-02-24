@@ -3,13 +3,13 @@ import { RegionsMonitor } from './services/regions-monitor';
 import { ContinentModelContribution } from './model/region-model';
 import { DataModelsManager, ModelServiceContribution, SequelizeModelContribution } from './data-models-manager';
 import { bindContributionProvider, BackendApplicationContribution, ConnectionHandler, JsonRpcConnectionHandler } from '@loop/core/lib';
-import { RegionsService, RegionsServiceClient, regionsPath } from '@loop/core/lib/common/services/regions';
+import { RegionsService, RegionsServiceClient, regionsPath } from '../common/services/regions';
 import { RegionClientsManager, RegionRepository, RegionClientsManagerService, RegionRepositoryService } from './model/region-repository';
 import { RegionsServiceServerImpl } from './services/regions-service';
 import { GroupModelContribution, UserGroupRelationModelContribution, UserModelContribution } from './model/users-model';
 import { UsersRepository } from './model/users-repository';
 import { AuthServiceServerImpl, InstallServiceServerImpl, SystemStateServiceServerImpl } from './services/users-service';
-import { authPath, AuthServiceClient, systemInstallPath, SystemStateClient, systemStatePath } from '@loop/core/lib/common/services/users';
+import { authPath, AuthServiceClient, systemInstallPath, SystemStateClient, systemStatePath } from '../common/services/users';
 
 export default new ContainerModule(bind => {
     bind(DataModelsManager).toSelf().inSingletonScope();

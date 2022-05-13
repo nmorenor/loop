@@ -1,5 +1,4 @@
 import { ConnectedComponent } from 'react-redux';
-import { RouteComponentProps } from 'react-router';
 
 export const RoutesApplicationContribution = Symbol('RoutesApplicationContribution');
 export interface RouteContribution {

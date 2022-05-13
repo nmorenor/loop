@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
+    "prepare": "yarn run build",
     "build": "run build",
     "build:clean": "run prepare",
     "prepare-public": "cp -R public dist/",

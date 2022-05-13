@@ -88,7 +88,7 @@ export class FrontendApplication {
         await this.startContributions();
 
         const body = await this.getHost();
-        const ctEntry =  document.getElementById('loop') !== undefined
+        const ctEntry = (document.getElementById('loop') !== undefined && document.getElementById('loop') !== null)
             ? document.getElementById('loop')! : document.createElement('div');
         ctEntry.setAttribute('id', 'loop');
         body.appendChild(ctEntry);

@@ -31,7 +31,7 @@ const Routes: React.FC<RoutesProps> = ({ routeProvider, serviceProvider }) => (
     <Switch>
       { routeProvider.getRoutes().map((next, index) => {
         if (next.exact) {
-          return <Route key={'main-route-' + index} exact path={next.path}
+          return <Route key={'main-route-' + index} exact={next.exact} path={next.path}
             render={props => <next.component {...props} serviceProvider={serviceProvider}></next.component>}/>;
         } else {
           return <Route key={'main-route-' + index} path={next.path}

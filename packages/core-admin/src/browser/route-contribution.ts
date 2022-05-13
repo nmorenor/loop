@@ -10,7 +10,7 @@ export class HomePageContribution implements RoutesApplicationContribution {
             component: IndexPage,
             name: 'Home',
             mainMenu: false,
-            exact: false
+            exact: true
         };
     }
 }

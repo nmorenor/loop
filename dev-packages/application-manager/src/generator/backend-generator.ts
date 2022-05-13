@@ -35,7 +35,7 @@ const { messagingBackendModule } = require('@loop/core/lib/node/messaging/messag
 const { CliManager } = require('@loop/core/lib/node/cli');
 const { BackendApplication } = require('@loop/core/lib/node/backend-application');
 const { LoopContainer } = require('@loop/core/lib/common/common');
-const { DataModelsManager } = require('@loop/data-models/lib/node/data-models-manager');
+const { DataModelsManager } = require('@loop/core-admin/lib/node/data-models-manager');
 
 const container = new Container();
 container.load(backendApplicationModule);

@@ -136,7 +136,12 @@ module.exports = {
                 test: /\\.js$/,
                 enforce: 'pre',
                 loader: 'source-map-loader',
-                exclude: /jsonc-parser|fast-plist|onigasm/
+                exclude: [
+                    /jsonc-parser/,
+                    /fast-plist/,
+                    /onigasm/,
+                    /inversify/
+                ]
             },
             {
                 test: /\\.woff(2)?(\\?v=[0-9]\\.[0-9]\\.[0-9])?$/,

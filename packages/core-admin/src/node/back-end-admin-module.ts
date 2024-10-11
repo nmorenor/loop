@@ -10,6 +10,10 @@ import { GroupModelContribution, UserGroupRelationModelContribution, UserModelCo
 import { UsersRepository } from './model/users-repository';
 import { AuthServiceServerImpl, InstallServiceServerImpl, SystemStateServiceServerImpl } from './services/users-service';
 import { authPath, AuthServiceClient, systemInstallPath, SystemStateClient, systemStatePath } from '../common/services/users';
+import { PaymentsService } from './services/payments/payments-service';
+import { StripePaymentEventHandlerContribution } from './services/payments/payments';
+import { StripeCustomerSubscriptionHandler } from './services/payments/payment-customer-subscription-event-handler';
+import { StripeCustomerChangeHandler } from './services/payments/payment-customer-event-handler';
 
 export default new ContainerModule(bind => {
     bind(DataModelsManager).toSelf().inSingletonScope();
@@ -93,4 +97,13 @@ export default new ContainerModule(bind => {
             return server;
         })
     ).inSingletonScope();
+    bind(PaymentsService).toSelf().inSingletonScope();
+
+    bindContributionProvider(bind, StripePaymentEventHandlerContribution)
+
+    bind(StripeCustomerSubscriptionHandler).toSelf().inSingletonScope();
+    bind(StripeCustomerChangeHandler).toSelf().inSingletonScope();
+
+    bind(StripePaymentEventHandlerContribution).toDynamicValue(ctx => ctx.container.get(StripeCustomerSubscriptionHandler));
+    bind(StripePaymentEventHandlerContribution).toDynamicValue(ctx => ctx.container.get(StripeCustomerChangeHandler));
 });

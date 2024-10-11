@@ -11,18 +11,21 @@
     "watch": "concurrently --kill-others -n tsc,browser,electron -c red,yellow,blue \"tsc -b -w --preserveWatchOutput\" \"yarn -s --cwd examples/browser watch:bundle\"",
     "watch:compile": "concurrently --kill-others -n cleanup,tsc -c magenta,red \"ts-clean dev-packages/* packages/* -w\" \"tsc -b -w --preserveWatchOutput\""
   },
-  "dependencies": {
-    
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/express": "^4.16.0",
+    "@typescript-eslint/parser": "^5.59.0",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@types/fs-extra": "^4.0.2",
     "@types/node": "^12.11.7",
     "@types/uuid": "^7.0.3",
     "@types/yargs": "^11.1.0",
     "lerna": "^2.2.0",
     "concurrently": "^3.5.0",
-    "tslint": "^5.12.0",
+    "prettier": "^2.8.4",
+    "eslint": "8.19.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-config-prettier": "^8.6.0",
     "typescript": "^4.3.5"
   },
   "workspaces": {

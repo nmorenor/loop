@@ -21,7 +21,7 @@
     "ext:build": "concurrently -n compile -c blue,green \"theiaext compile\" \"theiaext lint\"",
     "ext:compile": "tsc -p compile.tsconfig.json",
     "ext:compile:clean": "rimraf lib",
-    "ext:lint": "tslint -c ../../configs/build.tslint.json --project compile.tsconfig.json",
+    "ext:lint": "eslint -c ../../configs/build.tslint.json --ext .ts,.tsx",
     "ext:watch": "tsc -w -p compile.tsconfig.json",
     "ext:test": "nyc mocha --opts ../../configs/mocha.opts \"./lib/**/*.*spec.js\"",
     "ext:test:watch": "mocha -w --opts ../../configs/mocha.opts \"./lib/**/*.*spec.js\"",

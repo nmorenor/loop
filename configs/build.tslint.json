@@ -1,8 +1,125 @@
 {
-  "//": [
-    "Lint rules to use when building. We don't include warnings to avoid polluting the build output."
-  ],
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
   "extends": [
-    "./errors.tslint.json"
-  ]
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module",
+    "project": "./compile.tsconfig.json"
+  },
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "arrow-parens": ["error", "as-needed"],
+    "arrow-body-style": ["error", "as-needed", { "requireReturnForObjectLiteral": false }],
+    "class-methods-use-this": "off",
+    "capitalized-comments": ["error", "always", { "ignoreInlineComments": true }],
+    "curly": "error",
+    "eol-last": ["error", "always"],
+    "guard-for-in": "error",
+    "indent": ["error", 4, { "SwitchCase": 1 }],
+    "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
+    "max-len": ["error", { "code": 180 }],
+    "@typescript-eslint/no-explicit-any": "off",
+    "no-multiple-empty-lines": ["error", { "max": 1 }],
+    "no-new": "error",
+    "no-implicit-globals": "off", 
+    "no-implicit-dependencies": [
+      "error",
+      {
+        "devDependencies": true,
+        "optionalDependencies": false,
+        "peerDependencies": false,
+        "include": [
+          "@phosphor/algorithm",
+          "@phosphor/commands",
+          "@phosphor/coreutils",
+          "@phosphor/domutils",
+          "@phosphor/dragdrop",
+          "@phosphor/messaging",
+          "@phosphor/properties",
+          "@phosphor/signaling",
+          "@phosphor/virtualdom",
+          "@phosphor/widgets",
+          "chai",
+          "chai-string",
+          "electron",
+          "express",
+          "fs-extra",
+          "inversify",
+          "jsdom",
+          "lodash.debounce",
+          "lodash.throttle",
+          "monaco-languageclient",
+          "native-keymap",
+          "nsfw",
+          "react",
+          "react-dom",
+          "react-virtualized",
+          "sinon",
+          "temp",
+          "typescript",
+          "uuid",
+          "vscode-jsonrpc",
+          "vscode-languageserver",
+          "vscode-languageserver-protocol",
+          "vscode-languageserver-types",
+          "vscode-uri",
+          "vscode-ws-jsonrpc",
+          "yargs"
+        ]
+      }
+    ],
+    "no-magic-numbers": "off",
+    "no-null/no-null": "error",
+    "no-shadow": "error",
+    "no-throw-literal": "error",
+    "no-trailing-spaces": "error",
+    "@typescript-eslint/no-unused-expressions": "error",
+    "no-var": "error",
+    "no-void": ["error", { "allowAsStatement": true }],
+    "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
+    "one-var": ["error", "never"],
+    "@typescript-eslint/prefer-const": ["error", { "destructuring": "all" }],
+    "quotes": ["error", "single", { "avoidEscape": true }],
+    "radix": "off",
+    "semi": ["error", "always"],
+    "space-before-function-paren": ["error", { "anonymous": "always", "named": "never", "asyncArrow": "always" }],
+    "comma-dangle": "off",
+    "eqeqeq": ["error", "always", { "null": "ignore" }],
+    "@typescript-eslint/typedef": ["error", { "propertyDeclaration": true }],
+    "@typescript-eslint/type-annotation-spacing": [
+      "error",
+      {
+        "before": false,
+        "after": true,
+        "overrides": { "colon": { "before": false, "after": true } }
+      }
+    ],
+    "no-redeclare": "error",
+    "space-infix-ops": "error",
+    "@typescript-eslint/naming-convention": "off",
+    "whitespace": [
+      "error",
+      {
+        "beforeColon": false,
+        "afterColon": true,
+        "beforeOperator": false,
+        "afterOperator": true,
+        "beforeType": false,
+        "afterType": true,
+        "beforeSeparator": false,
+        "afterSeparator": true
+      }
+    ]
+  }
 }

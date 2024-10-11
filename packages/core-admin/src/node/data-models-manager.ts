@@ -2,6 +2,8 @@ import { ContributionProvider, LoopContainer, ApplicationConfigProvider, Backend
 import { injectable, interfaces, inject, LazyServiceIdentifer, named } from 'inversify';
 import { Sequelize } from 'sequelize';
 import { RegionClientsManager, RegionRepository } from './model/region-repository';
+import express from 'express';
+import { PaymentsService } from './services/payments/payments-service';
 
 export const LoopSequelize = Symbol('LoopSequelize');
 export const SequelizeModelContribution = Symbol('SequelizeModelContribution');
@@ -35,7 +37,8 @@ export class DataModelsManager implements BackendApplicationContribution {
         protected readonly modelServiceContributionsProvider: ContributionProvider<ModelServiceContribution>,
         @inject(ApplicationConfigProvider) protected readonly appConfig: ApplicationConfigProvider,
         @inject(RegionRepository) protected readonly regionRepository: RegionRepository,
-        @inject(RegionClientsManager) protected readonly regionClients: RegionClientsManager
+        @inject(RegionClientsManager) protected readonly regionClients: RegionClientsManager,
+        @inject(PaymentsService) protected readonly paymentsService: PaymentsService
     ) {
         // validate db config
         if (!this.appConfig
@@ -78,6 +81,10 @@ export class DataModelsManager implements BackendApplicationContribution {
         this.modelServiceContributionsProvider.getContributions().forEach(async (next: ModelServiceContribution) => {
             await next.start();
         });
+    }
+
+    public configure(app: express.Application): void {
+        this.paymentsService.configure(app);
     }
 
     /**

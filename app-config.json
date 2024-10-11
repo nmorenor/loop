@@ -6,5 +6,9 @@
         "port": 3306,
         "schema": "BACKEND"
     },
-    "jwtSecret": "gDQAE8dbbvMjA9nYhtaWaVWYHPcZyEG4"
+    "jwtSecret": "gDQAE8dbbvMjA9nYhtaWaVWYHPcZyEG4",
+    "stripeSecretKey": "sk_test_XXXXXXXXXXXXXXXX",
+    "stripeWebhookSecret": "whsec_XXXXXXXXXXXXXXXX",
+    "stripeWebhookBaseUrl": "API_HOST",
+    "rootAppUrl": "ROOT_HOST"
 }
